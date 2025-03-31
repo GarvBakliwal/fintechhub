@@ -10,21 +10,23 @@ import {
   getAccountTypeColors,
 } from "@/lib/utils";
 
-const BankInfo = ({ account, appwriteItemId, type }: BankInfoProps) => {
+const BankInfo = ({ account, selectedAccountId, type }: BankInfoProps & { selectedAccountId: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const isActive = appwriteItemId === account?.appwriteItemId;
+  // Check if the current account is active
+  const isActive = selectedAccountId === account?.id;
 
   const handleBankChange = () => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: "id",
-      value: account?.appwriteItemId,
+      value: account?.id, // Use `account.id` instead of `account.appwriteItemId`
     });
     router.push(newUrl, { scroll: false });
   };
 
+  // Get colors based on the account type
   const colors = getAccountTypeColors(account?.type as AccountTypes);
 
   return (

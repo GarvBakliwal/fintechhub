@@ -1,0 +1,70 @@
+{
+  "user": {
+    "id": "123",
+    "username": "garvbakliwal",
+    "password": "password123",
+    "firstName": "Garv",
+    "lastName": "Bakliwal",
+    "email": "garv@example.com"
+  },
+  "accounts": [
+    {
+      "id": "1",
+      "name": "Bank A",
+      "currentBalance": 1000,
+      "type": "checking",
+      "subtype": "personal",
+      "mask": "1234",
+      "shareableId": "bank-a-1234",
+      "banks": [
+        {
+          "id": "1",
+          "name": "Bank A",
+          "currentBalance": 1000
+        },
+        {
+          "id": "2",
+          "name": "Bank B",
+          "currentBalance": 2000
+        }
+      ],
+      "transactions": [
+        {
+          "id": "t1",
+          "amount": 100,
+          "category": "Food & Dining",
+          "description": "Transaction 1"
+        },
+        {
+          "id": "t2",
+          "amount": 200,
+          "category": "Shopping",
+          "description": "Transaction 2"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Bank B",
+      "currentBalance": 2000,
+      "type": "savings",
+      "subtype": "business",
+      "mask": "1234",
+      "shareableId": "bank-a-1234",
+      "transactions": [
+        {
+          "id": "t3",
+          "amount": 300,
+          "category": "Shopping",
+          "description": "Transaction 3"
+        },
+        {
+          "id": "t4",
+          "amount": 400,
+          "category": "Travel",
+          "description": "Transaction 4"
+        }
+      ]
+    }
+  ]
+}

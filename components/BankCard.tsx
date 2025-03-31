@@ -1,33 +1,28 @@
-import { formatAmount } from '@/lib/utils'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
-import Copy from './Copy'
+import { formatAmount } from '@/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+import Copy from './Copy';
 
 const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) => {
-
-  console.log(account);
   return (
     <div className="flex flex-col">
-      <Link href={`/transaction-history/?id=${account.appwriteItemId}`} className="bank-card">
+      {/* Updated the link to use `account.id` instead of `account.appwriteItemId` */}
+      <Link href={`/transaction-history/?id=${account.id}`} className="bank-card">
         <div className="bank-card_content">
           <div>
-            <h1 className="text-16 font-semibold text-white">
-              {account.name}
-            </h1>
-            <p className="font-ibm-plex-serif font-black text-white">
-              {formatAmount(account.currentBalance)}
-            </p>
+            <h1 className="text-16 font-semibold text-white">{account.name}</h1>
+            {showBalance && (
+              <p className="font-ibm-plex-serif font-black text-white">
+                {formatAmount(account.currentBalance)}
+              </p>
+            )}
           </div>
 
           <article className="flex flex-col gap-2">
             <div className="flex justify-between">
-              <h1 className="text-12 font-semibold text-white">
-                {userName}
-              </h1>
-              <h2 className="text-12 font-semibold text-white">
-              ●● / ●●
-              </h2>
+              <h1 className="text-12 font-semibold text-white">{userName}</h1>
+              <h2 className="text-12 font-semibold text-white">●● / ●●</h2>
             </div>
             <p className="text-14 font-semibold tracking-[1.1px] text-white">
               ●●●● ●●●● ●●●● <span className="text-16">{account?.mask}</span>
@@ -36,13 +31,13 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
         </div>
 
         <div className="bank-card_icon">
-          <Image 
+          <Image
             src="/icons/Paypass.svg"
             width={20}
             height={24}
             alt="pay"
           />
-          <Image 
+          <Image
             src="/icons/mastercard.svg"
             width={45}
             height={32}
@@ -51,7 +46,7 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
           />
         </div>
 
-        <Image 
+        <Image
           src="/icons/lines.png"
           width={316}
           height={190}
@@ -60,9 +55,10 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
         />
       </Link>
 
-      {showBalance && <Copy title={account?.sharaebleId} />}
+      {/* Updated to use `account.shareableId` instead of `account.sharaebleId` */}
+      {showBalance && <Copy title={account?.shareableId} />}
     </div>
-  )
-}
+  );
+};
 
-export default BankCard
+export default BankCard;
