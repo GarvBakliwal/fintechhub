@@ -1,6 +1,5 @@
 import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -9,9 +8,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = await getLoggedInUser();
+  let loggedIn;
 
-  if(!loggedIn) redirect('/sign-in')
+  try {
+    // Fetch user data from the JSON file
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/user-data.json`);
+    const data = await response.json();
+
+    // Assuming the JSON contains user data
+    loggedIn = data.user;
+
+    if (!loggedIn) {
+      redirect('/sign-in');
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    redirect('/sign-in');
+  }
 
   return (
     <main className="flex h-screen w-full font-inter">
