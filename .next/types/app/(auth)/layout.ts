@@ -1,4 +1,4 @@
-// File: /Users/garv/Desktop/College/Projects/HTML & CSS projects/fintechhub/app/(auth)/layout.tsx
+// File: /Users/garv/Desktop/College/Projects/fintechhub/app/(auth)/layout.tsx
 import * as entry from '../../../../app/(auth)/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

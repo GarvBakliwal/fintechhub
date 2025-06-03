@@ -1,4 +1,4 @@
-// File: /Users/garv/Desktop/College/Projects/HTML & CSS projects/fintechhub/app/(root)/payment-transfer/page.tsx
+// File: /Users/garv/Desktop/College/Projects/fintechhub/app/(root)/payment-transfer/page.tsx
 import * as entry from '../../../../../app/(root)/payment-transfer/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
