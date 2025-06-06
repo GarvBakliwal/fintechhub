@@ -11,21 +11,10 @@ import { Button } from '@/components/ui/button';
 import CustomInput from './CustomInput';
 import { authFormSchema } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
+import { loginUser, signUpUser } from '@/services/auth';
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
-  const [user, setUser] = useState<{
-    email: string;
-    password: string;
-    firstName?: string;
-    lastName?: string;
-    address1?: string;
-    city?: string;
-    state?: string;
-    postalCode?: string;
-    dateOfBirth?: string;
-    ssn?: string;
-  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,6 +23,8 @@ const AuthForm = ({ type }: { type: string }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
     },
@@ -44,16 +35,14 @@ const AuthForm = ({ type }: { type: string }) => {
     setError(null);
 
     try {
+      let userData;
       if (type === 'sign-up') {
-        const userData = { ...data };
-        console.log('User signed up:', userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        setUser(userData);
+        userData = await signUpUser(data);
         router.push('/');
       }
 
       if (type === 'sign-in') {
-        console.log('User signed in with email:', data.email);
+        userData = await loginUser(data);
         router.push('/');
       }
     } catch (err) {
@@ -102,6 +91,7 @@ const AuthForm = ({ type }: { type: string }) => {
         )}
         <CustomInput control={form.control} name="email" label="Email" placeholder="Enter your email" />
         <CustomInput control={form.control} name="password" label="Password" placeholder="Enter your password" />
+
         <Button
           type="submit"
           disabled={isLoading}
