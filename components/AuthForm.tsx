@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -12,11 +12,15 @@ import CustomInput from './CustomInput';
 import { authFormSchema } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { loginUser, signUpUser } from '@/services/auth';
+import { createLinkToken, exchangePublicToken } from '@/services/plaid';
+import { usePlaidLink } from 'react-plaid-link';
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [linkToken, setLinkToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const formSchema = authFormSchema(type);
 
@@ -30,24 +34,77 @@ const AuthForm = ({ type }: { type: string }) => {
     },
   });
 
+  const { open, ready } = usePlaidLink({
+    token: linkToken || '',
+
+    onSuccess: async (public_token: string, metadata) => {
+      try {
+        if (!userId) {
+          console.error("Missing userId, can't exchange token.");
+          setError("User ID missing. Please try again.");
+          return;
+        }
+
+        console.log("Public Token:", public_token);
+
+        await exchangePublicToken({ public_token, userId });
+
+        router.push('/'); // ✅ Redirect on success
+      } catch (err) {
+        console.error('Exchange token failed:', err);
+        setError('Bank connection failed. Please try again.');
+      }
+    },
+
+    onExit: (err, metadata) => {
+      if (err) {
+        console.warn('Plaid exited with error:', err);
+        setError('Plaid flow exited unexpectedly.');
+      } else {
+        console.log('User exited Plaid:', metadata);
+      }
+    },
+
+    onEvent: (eventName, metadata) => {
+      // Optional: log analytics
+      console.log('Plaid Event:', eventName, metadata);
+    }
+  });
+
+  useEffect(() => {
+    if (linkToken && ready) {
+      console.log('Opening Plaid link...');
+      open(); // auto-launch Plaid
+    }
+  }, [linkToken, ready]);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      let userData;
       if (type === 'sign-up') {
-        userData = await signUpUser(data);
-        router.push('/');
+        const userData = await signUpUser(data);
+        setUserId(userData._id);
+
+        const tokenRes = await createLinkToken({ userId: userData._id });
+        console.log(tokenRes.linkToken);
+        setLinkToken(tokenRes.linkToken);
       }
 
       if (type === 'sign-in') {
-        userData = await loginUser(data);
+        await loginUser(data);
         router.push('/');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch (err: any) {
       console.error(err);
+
+      // ✅ Extract message from backend
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -121,6 +178,16 @@ const AuthForm = ({ type }: { type: string }) => {
             Sign In
           </Link>
         </p>
+      )}
+
+      {linkToken && (
+        <Button
+          onClick={() => open()}
+          disabled={!ready}
+          className="mt-6 bg-green-600 hover:bg-green-700 text-white"
+        >
+          Connect Bank Account
+        </Button>
       )}
     </section>
   );
