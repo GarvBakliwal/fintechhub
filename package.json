@@ -22,6 +22,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.374.0",
     "next": "^14.0.0",
+    "plaid": "^35.0.0",
     "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
