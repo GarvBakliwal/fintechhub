@@ -20,17 +20,17 @@ const transactionSchema = new mongoose.Schema({
     detailed: String,
     confidence_level: String
   },
-  counterparties: [
-    {
-      name: String,
-      type: String,
-      confidence_level: String,
-      entity_id: String,
-      logo_url: String,
-      phone_number: String,
-      website: String
-    }
-  ]
+  counterparties: [ {type : Object}
+  // {
+  //   confidence_level: { type: String },
+  //   entity_id: { type: String },
+  //   logo_url: { type: String },
+  //   name: { type: String },
+  //   phone_number: { type: String },
+  //   type: { type: String },
+  //   website: { type: String },
+  // }
+]
 }, { timestamps: true });
 
 export default mongoose.model('Transaction', transactionSchema);

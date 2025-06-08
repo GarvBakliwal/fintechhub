@@ -49,30 +49,36 @@ export const storeTransactions = async (userId: string, accessToken: string) => 
     const transactions = response.data.transactions;
 
     await Promise.all(
-        transactions.map(tx =>
-            Transaction.findOneAndUpdate(
-                { transactionId: tx.transaction_id },
-                {
-                    userId,
-                    accountId: tx.account_id,
-                    transactionId: tx.transaction_id,
-                    name: tx.name,
-                    merchant_name: tx.merchant_name,
-                    website: tx.website,
-                    amount: tx.amount,
-                    iso_currency_code: tx.iso_currency_code,
-                    date: tx.date,
-                    authorized_date: tx.authorized_date,
-                    category: tx.category,
-                    payment_channel: tx.payment_channel,
-                    pending: tx.pending,
-                    logo_url: tx.logo_url,
-                    personal_finance_category: tx.personal_finance_category,
-                    counterparties: tx.counterparties,
-                },
-                { upsert: true, new: true }
-            )
-        )
+        transactions.map(async tx => {
+            try {
+                await Transaction.findOneAndUpdate(
+                    { transactionId: tx.transaction_id },
+                    {
+                        userId,
+                        accountId: tx.account_id,
+                        transactionId: tx.transaction_id,
+                        name: tx.name,
+                        merchant_name: tx.merchant_name,
+                        website: tx.website,
+                        amount: tx.amount,
+                        iso_currency_code: tx.iso_currency_code,
+                        date: tx.date,
+                        authorized_date: tx.authorized_date,
+                        category: tx.category,
+                        payment_channel: tx.payment_channel,
+                        pending: tx.pending,
+                        logo_url: tx.logo_url,
+                        personal_finance_category: tx.personal_finance_category,
+                        counterparties: tx.counterparties?.slice(),
+                    },
+                    { upsert: true, new: true }
+                )
+
+            } catch (err: any) {
+                console.error(`❌ Error storing transaction ${tx.transaction_id}:`, err.message);
+            }
+        })
+
     );
 
     console.log(`✔️ Stored ${transactions.length} transactions for user ${userId}`);
