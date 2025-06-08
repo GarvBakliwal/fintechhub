@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
   // Extract account names and balances from the accounts array
   const accountNames = accounts.map((account) => account.name);
-  const balances = accounts.map((account) => account.currentBalance);
+  const balances = accounts.map((account) => account.current_balance);
 
   // Define the chart data
   const data = {

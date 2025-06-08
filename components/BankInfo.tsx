@@ -2,32 +2,39 @@
 
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
-
+import { useGlobalStore } from "@/store/globalStore";
 import {
   cn,
   formUrlQuery,
   formatAmount,
   getAccountTypeColors,
 } from "@/lib/utils";
-
-const BankInfo = ({ account, selectedAccountId, type }: BankInfoProps & { selectedAccountId: string }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Check if the current account is active
+const BankInfo = ({
+  account,
+  type,
+}: BankInfoProps & { type: string }) => {
+  const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
   const isActive = selectedAccountId === account?.id;
-
+  
+  const router = useRouter();
   const handleBankChange = () => {
     const newUrl = formUrlQuery({
-      params: searchParams.toString(),
+      params: useSearchParams.toString(),
       key: "id",
-      value: account?.id, // Use `account.id` instead of `account.appwriteItemId`
+      value: account?.id,
     });
     router.push(newUrl, { scroll: false });
+    router
   };
 
-  // Get colors based on the account type
   const colors = getAccountTypeColors(account?.type as AccountTypes);
+
+  // ✅ Gracefully get the current balance
+  const rawBalance =
+    account?.current_balance ??
+    0;
+
+  const formattedBalance = formatAmount(Number(rawBalance) || 0);
 
   return (
     <div
@@ -65,8 +72,9 @@ const BankInfo = ({ account, selectedAccountId, type }: BankInfoProps & { select
           )}
         </div>
 
+        {/* ✅ Show safe formatted balance */}
         <p className={`text-16 font-medium text-blue-700 ${colors.subText}`}>
-          {formatAmount(account.currentBalance)}
+          {formattedBalance}
         </p>
       </div>
     </div>

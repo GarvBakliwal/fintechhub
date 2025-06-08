@@ -50,24 +50,23 @@ declare type NewUserParams = {
 };
 
 declare type Account = {
-  id: string;
+  id:string,
+  accountId: string;
   availableBalance: number;
-  currentBalance: number;
+  current_balance: number;
   officialName: string;
   mask: string;
   institutionId: string;
   name: string;
   type: string;
   subtype: string;
-  appwriteItemId: string;
-  shareableId: string;
 };
 
 declare type Transaction = {
   id: string;
   $id: string;
   name: string;
-  paymentChannel: string;
+  payment_channel: string;
   type: string;
   accountId: string;
   amount: number;

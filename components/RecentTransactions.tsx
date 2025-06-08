@@ -1,26 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BankTabItem } from "./BankTabItem";
 import BankInfo from "./BankInfo";
 import TransactionsTable from "./TransactionsTable";
 import { Pagination } from "./Pagination";
+import { useGlobalStore } from "@/store/globalStore";
 
-type RecentTransactionsProps = {
-  accounts: Account[];
-  transactions?: Transaction[];
-  selectedAccountId: string;
-  page?: number;
-};
+const RecentTransactions = () => {
+  const accounts = useGlobalStore((state) => state.accounts);
+  const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
+  const page = useGlobalStore((state) => state.page);
 
-const RecentTransactions = ({
-  accounts,
-  transactions = [],
-  selectedAccountId,
-  page = 1,
-}: RecentTransactionsProps) => {
+  const selectedAccount = accounts.find(
+    (acc) => acc.id === selectedAccountId
+  );
+
+  const transactions = selectedAccount?.transactions || [];
   const rowsPerPage = 10;
   const totalPages = Math.ceil(transactions.length / rowsPerPage);
-
   const indexOfLastTransaction = page * rowsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
 
@@ -41,32 +40,24 @@ const RecentTransactions = ({
         </Link>
       </header>
 
-      <Tabs defaultValue={selectedAccountId} className="w-full">
+      <Tabs defaultValue={accounts[0].id} className="w-full">
         <TabsList className="recent-transactions-tablist">
-          {accounts.map((account: Account) => (
+          {accounts.map((account) => (
             <TabsTrigger key={account.id} value={account.id}>
-              <BankTabItem
-                key={account.id}
-                account={account}
-                selectedAccountId={selectedAccountId}
-              />
+              <BankTabItem account={account} />
             </TabsTrigger>
           ))}
         </TabsList>
 
-        {accounts.map((account: Account) => (
+        {accounts.map((account) => (
           <TabsContent
             value={account.id}
             key={account.id}
             className="space-y-4"
           >
-            <BankInfo
-              account={account}
-              selectedAccountId={selectedAccountId}
-              type="full"
-            />
+            <BankInfo account={account} type="full" />
 
-            <TransactionsTable transactions={currentTransactions} />
+            <TransactionsTable />
 
             {totalPages > 1 && (
               <div className="my-4 w-full">

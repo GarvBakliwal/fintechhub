@@ -1,24 +1,26 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-
+import { useRouter, useSearchParams } from "next/navigation";
 import { cn, formUrlQuery } from "@/lib/utils";
+import { useGlobalStore } from "@/store/globalStore";
 
 interface BankTabItemProps {
   account: { id: string; name: string };
-  selectedAccountId: string;
 }
 
-export const BankTabItem = ({ account, selectedAccountId }: BankTabItemProps) => {
-  const searchParams = useSearchParams();
+export const BankTabItem = ({ account }: BankTabItemProps) => {
   const router = useRouter();
-  const isActive = selectedAccountId === account?.id;
+  const searchParams = useSearchParams();
+  const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
+  const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
+  const isActive = selectedAccountId;
 
   const handleBankChange = () => {
+    setSelectedAccountId(account.id);
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: "id",
-      value: account?.id,
+      value: account.id,
     });
     router.push(newUrl, { scroll: false });
   };
@@ -26,12 +28,12 @@ export const BankTabItem = ({ account, selectedAccountId }: BankTabItemProps) =>
   return (
     <div
       onClick={handleBankChange}
-      className={cn(`banktab-item`, {
+      className={cn("banktab-item", {
         "border-blue-600": isActive,
       })}
     >
       <p
-        className={cn(`text-16 line-clamp-1 flex-1 font-medium text-gray-500`, {
+        className={cn("text-16 line-clamp-1 flex-1 font-medium text-gray-500", {
           "text-blue-600": isActive,
         })}
       >

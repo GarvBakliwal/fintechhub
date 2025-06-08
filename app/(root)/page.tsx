@@ -1,40 +1,49 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import HeaderBox from '@/components/HeaderBox';
 import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
+import { getData } from '@/services/data';
+import { useGlobalStore } from '@/store/globalStore';
 
-const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
-  const currentPage = Number(page as string) || 1;
+const Home = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [page] = useState(1);
 
-  let loggedIn, accountsData, account, selectedAccountId: string;
+  // Zustand store values
+  const user = useGlobalStore((state) => state.user);
+  const accounts = useGlobalStore((state) => state.accounts);
+  const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
 
-  try {
-    // Fetch user data from the JSON file
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-data.json`, { cache: 'no-store' });
-    console.log('Fetch response:', response);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getData();
+        useGlobalStore.getState().setAllData(data);
+        const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
+        setSelectedAccountId(firstAccountId);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load data.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
+    fetchData();
+  }, [setSelectedAccountId]);
 
-    const data = await response.json();
-    console.log('Fetched data:', data);
+  const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
+  const selectedAccount = accounts.find(
+    (acc: any) => acc.id === selectedAccountId || acc.accountId === selectedAccountId
+  );
 
-    // Extract user and accounts data
-    loggedIn = data.user;
-    accountsData = data.accounts;
-
-    if (!accountsData || accountsData.length === 0) {
-      return <p>No accounts found.</p>;
-    }
-
-    // Determine the selected account
-    selectedAccountId = (id as string) || accountsData[0]?.id;
-    account = accountsData.find((acc: any) => acc.id === selectedAccountId);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    return <p>Error loading data. Please try again later.</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!accounts || accounts.length === 0) return <p>No accounts found.</p>;
 
   return (
     <section className="home">
@@ -43,32 +52,27 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
           <HeaderBox
             type="greeting"
             title="Welcome"
-            user={loggedIn?.firstName || 'Guest'}
+            user={user?.firstName || 'Guest'}
             subtext="Access and manage your account and transactions efficiently."
           />
 
           <TotalBalanceBox
-            accounts={accountsData}
-            totalBanks={accountsData.length}
-            totalCurrentBalance={accountsData.reduce(
-              (sum: number, acc: any) => sum + acc.currentBalance,
+            accounts={accounts}
+            totalBanks={accounts.length}
+            totalCurrentBalance={accounts.reduce(
+              (sum: number, acc: any) => sum + acc.current_balance,
               0
             )}
           />
         </header>
 
-        <RecentTransactions
-          accounts={accountsData}
-          transactions={account?.transactions || []}
-          selectedAccountId={selectedAccountId}
-          page={currentPage}
-        />
+        <RecentTransactions />
       </div>
 
       <RightSidebar
-        user={loggedIn}
-        transactions={account?.transactions || []}
-        banks={accountsData?.slice(0, 2)}
+        user={user}
+        transactions={selectedAccount?.transactions || []}
+        banks={accounts.slice(0, 2)}
       />
     </section>
   );
