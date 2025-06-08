@@ -20,7 +20,6 @@ const AuthForm = ({ type }: { type: string }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [linkToken, setLinkToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
 
   const formSchema = authFormSchema(type);
 
@@ -36,45 +35,32 @@ const AuthForm = ({ type }: { type: string }) => {
 
   const { open, ready } = usePlaidLink({
     token: linkToken || '',
-
-    onSuccess: async (public_token: string, metadata) => {
+    onSuccess: async (public_token: string) => {
+      console.log('[PLAID] onSuccess - Public Token:', public_token);
       try {
-        if (!userId) {
-          console.error("Missing userId, can't exchange token.");
-          setError("User ID missing. Please try again.");
-          return;
-        }
-
-        console.log("Public Token:", public_token);
-
-        await exchangePublicToken({ public_token, userId });
-
-        router.push('/'); // ✅ Redirect on success
+        await exchangePublicToken({ public_token });
+        console.log('[PLAID] Token exchanged successfully. Redirecting...');
+        router.push('/');
       } catch (err) {
-        console.error('Exchange token failed:', err);
+        console.error('[PLAID] Exchange failed:', err);
         setError('Bank connection failed. Please try again.');
       }
     },
-
-    onExit: (err, metadata) => {
+    onExit: (err) => {
       if (err) {
-        console.warn('Plaid exited with error:', err);
+        console.warn('[PLAID] Link exited with error:', err);
         setError('Plaid flow exited unexpectedly.');
-      } else {
-        console.log('User exited Plaid:', metadata);
       }
     },
-
     onEvent: (eventName, metadata) => {
-      // Optional: log analytics
-      console.log('Plaid Event:', eventName, metadata);
-    }
+      console.log('[PLAID] Event:', eventName, metadata);
+    },
   });
 
   useEffect(() => {
     if (linkToken && ready) {
-      console.log('Opening Plaid link...');
-      open(); // auto-launch Plaid
+      console.log('[PLAID] Opening link automatically...');
+      open();
     }
   }, [linkToken, ready]);
 
@@ -84,22 +70,25 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       if (type === 'sign-up') {
+        console.log('[AUTH] Signing up user with data:', data);
         const userData = await signUpUser(data);
-        setUserId(userData._id);
+        localStorage.setItem('token', userData.token);
+        console.log('[AUTH] User signed up. Token stored.');
 
-        const tokenRes = await createLinkToken({ userId: userData._id });
-        console.log(tokenRes.linkToken);
+        const tokenRes = await createLinkToken(); // no userId needed
         setLinkToken(tokenRes.linkToken);
+        console.log('[PLAID] Link token created:', tokenRes.linkToken);
       }
 
       if (type === 'sign-in') {
-        await loginUser(data);
+        console.log('[AUTH] Signing in user...');
+        const userData = await loginUser(data);
+        localStorage.setItem('token', userData.token);
+        console.log('[AUTH] User signed in. Redirecting...');
         router.push('/');
       }
     } catch (err: any) {
-      console.error(err);
-
-      // ✅ Extract message from backend
+      console.error('[AUTH] Error:', err);
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
@@ -132,18 +121,8 @@ const AuthForm = ({ type }: { type: string }) => {
       >
         {type === 'sign-up' && (
           <>
-            <CustomInput
-              control={form.control}
-              name="firstName"
-              label="First Name"
-              placeholder="Enter your first name"
-            />
-            <CustomInput
-              control={form.control}
-              name="lastName"
-              label="Last Name"
-              placeholder="Enter your last name"
-            />
+            <CustomInput control={form.control} name="firstName" label="First Name" placeholder="Enter your first name" />
+            <CustomInput control={form.control} name="lastName" label="Last Name" placeholder="Enter your last name" />
           </>
         )}
         <CustomInput control={form.control} name="email" label="Email" placeholder="Enter your email" />
@@ -164,25 +143,31 @@ const AuthForm = ({ type }: { type: string }) => {
         </Button>
       </form>
 
-      {type === 'sign-in' ? (
-        <p className="mt-4 text-sm text-gray-600">
-          Don’t have an account?{' '}
-          <Link href="/sign-up" className="text-blue-600 hover:underline">
-            Sign Up
-          </Link>
-        </p>
-      ) : (
-        <p className="mt-4 text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link href="/sign-in" className="text-blue-600 hover:underline">
-            Sign In
-          </Link>
-        </p>
-      )}
+      <p className="mt-4 text-sm text-gray-600">
+        {type === 'sign-in' ? (
+          <>
+            Don’t have an account?{' '}
+            <Link href="/sign-up" className="text-blue-600 hover:underline">
+              Sign Up
+            </Link>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <Link href="/sign-in" className="text-blue-600 hover:underline">
+              Sign In
+            </Link>
+          </>
+        )}
+      </p>
 
+      {/* Manual fallback if auto Plaid open fails */}
       {linkToken && (
         <Button
-          onClick={() => open()}
+          onClick={() => {
+            console.log('[PLAID] Manual button clicked');
+            if (ready) open();
+          }}
           disabled={!ready}
           className="mt-6 bg-green-600 hover:bg-green-700 text-white"
         >
