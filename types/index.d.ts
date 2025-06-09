@@ -260,7 +260,7 @@ declare interface CreateFundingSourceOptions {
   _links: object; // Dwolla On Demand Authorization Link
 }
 
-export interface Transaction {
+export interface TransferDetails {
   name: string;            // Transfer note or transaction name
   amount: string;          // Amount as a string (e.g., "100.00")
   senderId: string;        // User ID of the sender

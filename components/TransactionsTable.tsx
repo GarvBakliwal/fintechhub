@@ -19,6 +19,7 @@ import {
   getTransactionStatus,
   removeSpecialCharacters,
 } from "@/lib/utils";
+import { CategoryBadgeProps, Transaction } from "@/types";
 
 const CategoryBadge = ({ category }: CategoryBadgeProps) => {
   const {
@@ -78,12 +79,12 @@ const TransactionsTable = () => {
           const status = getTransactionStatus(new Date(t.date));
           const amount = formatAmount(t.amount);
 
-          const isDebit = t.type === "debit";
-          const isCredit = t.type === "credit";
+          const isDebit = t.amount < 0 ? true : false;
+          const isCredit = t.amount >= 0? true : false;
 
           return (
             <TableRow
-              key={t.id}
+              key={t.transactionId}
               className={cn(
                 isDebit || amount[0] === "-"
                   ? "bg-[#FFFBFA]"
@@ -107,7 +108,7 @@ const TransactionsTable = () => {
                     : "text-[#039855]"
                 )}
               >
-                {isDebit ? `-${amount}` : isCredit ? amount : amount}
+                {isDebit ? `${amount}` : isCredit ? amount : amount}
               </TableCell>
 
               <TableCell className="pl-2 pr-10">
