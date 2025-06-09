@@ -1,8 +1,5 @@
 import { create } from 'zustand';
-
-type User = any;
-type Account = any;
-type Transaction = any;
+import { User,Account,Transaction } from '@/types/index';
 
 type GlobalStore = {
   user: User | null;

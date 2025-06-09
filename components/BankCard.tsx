@@ -3,18 +3,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import Copy from './Copy';
+import { Account } from '@/types/index';
 
-const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) => {
+interface BankCardProps {
+  account: Account;
+  userName: string;
+  showBalance?: boolean;
+}
+
+const BankCard = ({ account, userName, showBalance = true }: BankCardProps) => {
   return (
     <div className="flex flex-col">
-      {/* Updated the link to use `account.id` instead of `account.appwriteItemId` */}
-      <Link href={`/transaction-history/?id=${account.id}`} className="bank-card">
+      <Link
+        href={`/transaction-history/?id=${account.accountId || account._id}`}
+        className="bank-card"
+      >
         <div className="bank-card_content">
           <div>
             <h1 className="text-16 font-semibold text-white">{account.name}</h1>
             {showBalance && (
               <p className="font-ibm-plex-serif font-black text-white">
-                {formatAmount(account.currentBalance)}
+                {formatAmount(Number(account.current_balance) || 0)}
               </p>
             )}
           </div>
@@ -25,7 +34,7 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
               <h2 className="text-12 font-semibold text-white">●● / ●●</h2>
             </div>
             <p className="text-14 font-semibold tracking-[1.1px] text-white">
-              ●●●● ●●●● ●●●● <span className="text-16">{account?.mask}</span>
+              ●●●● ●●●● ●●●● <span className="text-16">{account?.mask || "0000"}</span>
             </p>
           </article>
         </div>
@@ -55,8 +64,7 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
         />
       </Link>
 
-      {/* Updated to use `account.shareableId` instead of `account.sharaebleId` */}
-      {showBalance && <Copy title={account?.shareableId} />}
+      {showBalance && <Copy title={account?.accountId || account?._id || ""} />}
     </div>
   );
 };

@@ -50,44 +50,40 @@ export const ITEMS = [
 ];
 
 export const topCategoryStyles = {
-  "Food and Drink": {
-    bg: "bg-blue-25",
-    circleBg: "bg-blue-100",
-    text: {
-      main: "text-blue-900",
-      count: "text-blue-700",
-    },
-    progress: {
-      bg: "bg-blue-100",
-      indicator: "bg-blue-700",
-    },
-    icon: "/icons/monitor.svg",
-  },
   Travel: {
-    bg: "bg-success-25",
-    circleBg: "bg-success-100",
-    text: {
-      main: "text-success-900",
-      count: "text-success-700",
-    },
-    progress: {
-      bg: "bg-success-100",
-      indicator: "bg-success-700",
-    },
+    bg: "bg-green-50",
+    circleBg: "bg-green-100",
+    text: { main: "text-green-700", count: "text-green-700" },
+    progress: { bg: "bg-green-100", indicator: "bg-green-500" },
     icon: "/icons/coins.svg",
   },
-  default: {
-    bg: "bg-pink-25",
+  "Food and Drink": {
+    bg: "bg-blue-50",
+    circleBg: "bg-blue-100",
+    text: { main: "text-blue-700", count: "text-blue-700" },
+    progress: { bg: "bg-blue-100", indicator: "bg-blue-500" },
+    icon: "/icons/monitor.svg",
+  },
+  Transfer: {
+    bg: "bg-pink-50",
     circleBg: "bg-pink-100",
-    text: {
-      main: "text-pink-900",
-      count: "text-pink-700",
-    },
-    progress: {
-      bg: "bg-pink-100",
-      indicator: "bg-pink-700",
-    },
-    icon: "/icons/shopping-bag.svg",
+    text: { main: "text-pink-700", count: "text-pink-700" },
+    progress: { bg: "bg-pink-100", indicator: "bg-pink-500" },
+    icon: "/icons/coins.svg",
+  },
+  Payment: {
+    bg: "bg-purple-50",
+    circleBg: "bg-purple-100",
+    text: { main: "text-purple-700", count: "text-purple-700" },
+    progress: { bg: "bg-purple-100", indicator: "bg-purple-500" },
+    icon: "/icons/payment.svg",
+  },
+  default: {
+    bg: "bg-gray-50",
+    circleBg: "bg-gray-100",
+    text: { main: "text-gray-700", count: "text-gray-700" },
+    progress: { bg: "bg-gray-100", indicator: "bg-gray-400" },
+    icon: "/icons/bank-transfer.svg",
   },
 };
 

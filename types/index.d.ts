@@ -25,22 +25,16 @@ declare type LoginUser = {
   password: string;
 };
 
-declare type User = {
-  $id: string;
-  email: string;
-  userId: string;
-  dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
+export interface User {
+  _id: string;
   firstName: string;
   lastName: string;
-  name: string;
-  address1: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
-};
+  email: string;
+  password?: string;
+  plaidAccessToken?: string;
+  plaidItemId?: string;
+  dwollaCustomerId?: string;
+}
 
 declare type NewUserParams = {
   userId: string;
@@ -49,38 +43,34 @@ declare type NewUserParams = {
   password: string;
 };
 
-declare type Account = {
-  id:string,
+export interface Account {
+  _id: string;
+  userId: string;
   accountId: string;
-  availableBalance: number;
-  current_balance: number;
-  officialName: string;
+  name: string;
+  official_name: string;
   mask: string;
-  institutionId: string;
-  name: string;
-  type: string;
   subtype: string;
-};
+  current_balance: number;
+  holder_category: string;
+  institution_name: string;
+  transactions: Transaction[];
+}
 
-declare type Transaction = {
-  id: string;
-  $id: string;
-  name: string;
-  payment_channel: string;
-  type: string;
+export interface Transaction {
+  _id: string;
+  userId: string;
   accountId: string;
+  transactionId: string;
+  name: string;
   amount: number;
+  date: string;
+  payment_channel: string;
   pending: boolean;
   category: string;
-  date: string;
-  image: string;
-  type: string;
-  $createdAt: string;
-  channel: string;
-  senderBankId: string;
-  receiverBankId: string;
-};
-
+  createdAt?: string;
+  updatedAt?: string;
+}
 declare type Bank = {
   $id: string;
   accountId: string;
@@ -177,15 +167,6 @@ declare interface PlaidLinkProps {
   variant?: "primary" | "ghost";
   dwollaCustomerId?: string;
 }
-
-// declare type User = sdk.Models.Document & {
-//   accountId: string;
-//   email: string;
-//   name: string;
-//   items: string[];
-//   accessToken: string;
-//   image: string;
-// };
 
 declare interface AuthFormProps {
   type: "sign-in" | "sign-up";
