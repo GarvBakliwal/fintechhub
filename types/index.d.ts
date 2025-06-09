@@ -260,14 +260,14 @@ declare interface CreateFundingSourceOptions {
   _links: object; // Dwolla On Demand Authorization Link
 }
 
-declare interface CreateTransactionProps {
-  name: string;
-  amount: string;
-  senderId: string;
-  senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
-  email: string;
+export interface Transaction {
+  name: string;            // Transfer note or transaction name
+  amount: string;          // Amount as a string (e.g., "100.00")
+  senderId: string;        // User ID of the sender
+  senderBankId: string;    // Bank account ID of the sender
+  receiverId: string;      // User ID of the receiver
+  receiverBankId: string;  // Bank account ID of the receiver
+  email: string;           // Recipient's email address
 }
 
 declare interface getTransactionsByBankIdProps {
