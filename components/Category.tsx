@@ -1,9 +1,8 @@
 import Image from "next/image";
+import { cn } from "./../lib/utils";
 
 import { topCategoryStyles } from "@/constants";
-import { cn } from "@/lib/utils";
-
-import { Progress } from "./ui/progress";
+import { CategoryProps } from "@/types";
 
 const Category = ({ category }: CategoryProps) => {
   // Extract styles based on the category name or use default styles
@@ -16,27 +15,30 @@ const Category = ({ category }: CategoryProps) => {
   } = topCategoryStyles[category.name as keyof typeof topCategoryStyles] ||
     topCategoryStyles.default;
 
+  // Calculate progress (percentage of total)
+  const percent = category.totalCount
+    ? Math.round((category.count / category.totalCount) * 100)
+    : 0;
+
   return (
-    <div className={cn("gap-[18px] flex p-4 rounded-xl", bg)}>
-      {/* Icon for the category */}
-      <figure className={cn("flex-center size-10 rounded-full", circleBg)}>
-        <Image src={icon} width={20} height={20} alt={category.name} />
+    <div className={cn("flex items-center gap-3 p-2 rounded-lg min-h-[40px] text-[13px] bg-white", bg)}>
+      {/* Icon */}
+      <figure className={cn("flex-center size-8 rounded-full", circleBg)}>
+        <Image src={icon} width={16} height={16} alt={category.name} />
       </figure>
-
-      {/* Category details */}
-      <div className="flex w-full flex-1 flex-col gap-2">
-        <div className="text-14 flex justify-between">
-          <h2 className={cn("font-medium", main)}>{category.name}</h2>
-          <h3 className={cn("font-normal", count)}>{category.count}</h3>
+      {/* Details */}
+      <div className="flex flex-col flex-1">
+        <span className={cn("font-medium", main)}>{category.name}</span>
+        {/* Progress bar */}
+        <div className={cn("w-full h-1 rounded-full mt-1", progressBg)}>
+          <div
+            className={cn("h-1 rounded-full", indicator)}
+            style={{ width: `${percent}%` }}
+          />
         </div>
-
-        {/* Progress bar for the category */}
-        <Progress
-          value={(category.count / category.totalCount) * 100}
-          className={cn("h-2 w-full", progressBg)}
-          style={{ backgroundColor: indicator }}
-        />
       </div>
+      {/* Count */}
+      <span className={cn("ml-2 font-semibold", count)}>{category.count}</span>
     </div>
   );
 };

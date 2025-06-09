@@ -1,11 +1,16 @@
+import { useGlobalStore } from "@/store/globalStore";
 import AnimatedCounter from './AnimatedCounter';
 import DoughnutChart from './DoughnutChart';
+import { Account } from "@/types";
 
-const TotalBalanceBox = ({
-  accounts = [],
-  totalBanks,
-  totalCurrentBalance,
-}: TotalBalanceBoxProps) => {
+const TotalBalanceBox = () => {
+  const accounts = useGlobalStore((state) => state.accounts);
+  const totalBanks = accounts.length;
+  const totalCurrentBalance = accounts.reduce(
+    (sum: number, acc: Account) => sum + acc.current_balance,
+    0
+  );
+
   return (
     <section className="total-balance">
       {/* Doughnut Chart Section */}
