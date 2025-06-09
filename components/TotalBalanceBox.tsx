@@ -7,7 +7,7 @@ const TotalBalanceBox = () => {
   const accounts = useGlobalStore((state) => state.accounts);
   const totalBanks = accounts.length;
   const totalCurrentBalance = accounts.reduce(
-    (sum: number, acc: Account) => sum + acc.current_balance,
+    (sum: number, acc: Account) => sum + Number(acc.current_balance),
     0
   );
 

@@ -12,8 +12,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Footer from './Footer';
+import { MobileNavProps } from '@/types';
 
-const MobileNav = ({ user }: MobileNavProps) => {
+const MobileNav = () => {
   const pathname = usePathname();
 
   return (
@@ -29,7 +30,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
           />
         </SheetTrigger>
         <SheetContent side="left" className="border-none bg-white">
-          <Link href="/" className="cursor-pointer flex items-center gap-1 px-4">
+          <Link href="/" className="flex items-center gap-1 px-4 cursor-pointer">
             <Image
               src="/icons/logo.svg"
               width={34}
@@ -37,11 +38,11 @@ const MobileNav = ({ user }: MobileNavProps) => {
               alt="Horizon logo"
             />
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-              Horizon
+              FintechHub
             </h1>
           </Link>
           <div className="mobilenav-sheet">
-            <nav className="flex h-full flex-col gap-6 pt-16 text-white">
+            <nav className="flex flex-col gap-6 pt-16 h-full">
               {sidebarLinks.map((item) => {
                 const isActive =
                   pathname === item.route ||
@@ -51,9 +52,12 @@ const MobileNav = ({ user }: MobileNavProps) => {
                   <SheetClose asChild key={item.route}>
                     <Link
                       href={item.route}
-                      className={cn('mobilenav-sheet_close w-full', {
-                        'bg-bank-gradient': isActive,
-                      })}
+                      className={cn(
+                        'mobilenav-sheet_close w-full flex items-center gap-3 px-4 py-2 rounded transition',
+                        {
+                          'bg-bank-gradient': isActive,
+                        }
+                      )}
                     >
                       <Image
                         src={item.imgURL}
@@ -77,9 +81,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 );
               })}
             </nav>
-
-            {/* Footer for mobile navigation */}
-            <Footer user={user} type="mobile" />
+            <Footer type="mobile" />
           </div>
         </SheetContent>
       </Sheet>

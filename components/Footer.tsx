@@ -1,13 +1,17 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { useGlobalStore } from '@/store/globalStore';
+import { FooterProps } from '@/types';
 
-const Footer = ({ user, type = 'desktop' }: FooterProps) => {
+const Footer = ({ type = 'desktop' }: Omit<FooterProps, 'user'>) => {
   const router = useRouter();
+  const user = useGlobalStore((state) => state.user);
 
   const handleLogOut = () => {
     // Simulate logout by clearing user data and redirecting to sign-in
-    console.log('User logged out');
+    useGlobalStore.getState().logout?.(); // If you have a logout action in your store
+    localStorage.removeItem('token');
     router.push('/sign-in');
   };
 

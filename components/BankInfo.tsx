@@ -9,25 +9,26 @@ import {
   formatAmount,
   getAccountTypeColors,
 } from "@/lib/utils";
+import { AccountTypes, BankInfoProps } from "@/types";
 const BankInfo = ({
   account,
   type,
 }: BankInfoProps & { type: string }) => {
   const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
-  const isActive = selectedAccountId === account?.id;
+  const isActive = selectedAccountId === account?._id;
   
   const router = useRouter();
   const handleBankChange = () => {
     const newUrl = formUrlQuery({
       params: useSearchParams.toString(),
       key: "id",
-      value: account?.id,
+      value: account?._id,
     });
     router.push(newUrl, { scroll: false });
     router
   };
 
-  const colors = getAccountTypeColors(account?.type as AccountTypes);
+  const colors = getAccountTypeColors(account?.subtype as AccountTypes);
 
   // ✅ Gracefully get the current balance
   const rawBalance =

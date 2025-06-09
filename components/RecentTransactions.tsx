@@ -26,7 +26,7 @@ const RecentTransactions = () => {
     (txn) => txn.accountId === selectedAccount?.accountId || txn.accountId === selectedAccount?._id
   );
   return (
-    <section className="recent-transactions bg-white rounded-xl shadow p-6 mt-6 overflow-x-auto">
+    <section className="recent-transactions">
       <header className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Recent transactions</h2>
         <Link
