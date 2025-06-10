@@ -1,10 +1,13 @@
 "use client";
-import BankCard from '@/components/BankCard';
-import HeaderBox from '@/components/HeaderBox';
-import { Spinner } from '@/components/ui/loadingspinner';
-import { getData } from '@/services/data';
-import { useGlobalStore } from '@/store/globalStore';
-import { useEffect, useState } from 'react';
+
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import BankCard from "@/components/BankCard";
+import HeaderBox from "@/components/HeaderBox";
+import { Spinner } from "@/components/ui/loadingspinner";
+import { getData } from "@/services/data";
+import { useGlobalStore } from "@/store/globalStore";
+import { useAddBank } from "@/services/addBank";
 
 const MyBanks = () => {
   const accounts = useGlobalStore((state) => state.accounts);
@@ -14,6 +17,8 @@ const MyBanks = () => {
   const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(accounts.length === 0);
+
+  const { handleAddBank, plaidLoading } = useAddBank(); // ✅ use hook
 
   useEffect(() => {
     if (accounts.length > 0) {
@@ -27,45 +32,58 @@ const MyBanks = () => {
         setUser(data.user);
         const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
         setSelectedAccountId(firstAccountId);
-      } catch (err) {
-        setError('Failed to load accounts.');
+      } catch {
+        setError("Failed to load accounts.");
       } finally {
         setLoading(false);
       }
     };
     fetchAccounts();
-  }, [accounts.length, setAccounts, setSelectedAccountId]);
+  }, []);
 
-    if (loading)
-      return (
-        <div className="flex items-center justify-center min-h-screen w-full bg-white">
-          <Spinner size="large" show className="text-blue-600">
-            <span className="mt-4 text-lg font-semibold text-blue-700">Loading…</span>
-          </Spinner>
-        </div>
-      );
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen w-full bg-white">
+        <Spinner size="large" show className="text-blue-600">
+          <span className="mt-4 text-lg font-semibold text-blue-700">Loading…</span>
+        </Spinner>
+      </div>
+    );
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <section className="flex">
-      <div className="my-banks">
-        <HeaderBox
-          title="My Bank Accounts"
-          subtext="Effortlessly manage your banking activities."
-        />
+    <section className="w-full p-4">
+      <HeaderBox
+        title="Your Banks"
+        subtext="All your connected bank accounts"
+      />
 
-        <div className="space-y-4">
-          <h2 className="header-2">Your cards</h2>
-          <div className="flex flex-wrap gap-6">
-            {accounts.map((account) => (
-              <BankCard
-                key={account._id || account.accountId}
-                account={account}
-                userName={`${user?.firstName || "Guest"} ${user?.lastName || ""}`}
-              />
-            ))}
-          </div>
-        </div>
+      {/* Add Bank Button for mobile */}
+      <div className="flex justify-end mt-4 md:hidden">
+        <button
+          type="button"
+          className="flex gap-2 items-center"
+          onClick={handleAddBank}
+          disabled={plaidLoading}
+        >
+          <Image src="/icons/plus.svg" width={20} height={20} alt="plus" />
+          <h2 className="text-14 font-semibold text-gray-600">Add Bank</h2>
+          {plaidLoading && (
+            <Spinner size="small" show className="ml-2 text-blue-600" />
+          )}
+        </button>
+      </div>
+
+      {/* Bank Cards */}
+      <div className="flex flex-col gap-6 mt-6">
+        {accounts.map((acc) => (
+          <BankCard
+            key={acc._id}
+            account={acc}
+            userName={`${user?.firstName || "Guest"} ${user?.lastName || ""}`}
+            showBalance={true}
+          />
+        ))}
       </div>
     </section>
   );

@@ -8,7 +8,7 @@ import { Account, CategoryCount } from "@/types/index";
 import { usePlaidLink } from 'react-plaid-link';
 import { createLinkToken, exchangePublicToken } from "@/services/plaid";
 import { getData } from "@/services/data";
-import { Spinner } from "@/components/ui/loadingspinner"; // Adjust path if needed
+import { Spinner } from "@/components/ui/loadingspinner";
 
 const RightSidebar = () => {
   const user = useGlobalStore((state) => state.user);
