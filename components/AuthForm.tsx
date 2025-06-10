@@ -70,6 +70,7 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       if (type === 'sign-up') {
+        console.log(`${process.env.BACKEND_URL}`);
         console.log('[AUTH] Signing up user with data:', data);
         const userData = await signUpUser(data);
         localStorage.setItem('token', userData.token);

@@ -10,79 +10,121 @@ import { sidebarLinks } from '@/constants';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import Footer from './Footer';
-import { MobileNavProps } from '@/types';
+import { usePathname, useRouter } from 'next/navigation';
+import { useGlobalStore } from '@/store/globalStore';
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const user = useGlobalStore((state) => state.user);
+  const logout = useGlobalStore((state) => state.logout);
+
+  const handleLogOut = () => {
+    logout?.();
+    localStorage.removeItem('token');
+    router.push('/sign-in');
+  };
 
   return (
     <section className="w-full max-w-[264px]">
       <Sheet>
-        <SheetTrigger>
-          <Image
-            src="/icons/hamburger.svg"
-            width={30}
-            height={30}
-            alt="menu"
-            className="cursor-pointer"
-          />
+        <SheetTrigger asChild>
+          <button>
+            <Image
+              src="/icons/hamburger.svg"
+              width={30}
+              height={30}
+              alt="menu"
+              className="cursor-pointer"
+            />
+          </button>
         </SheetTrigger>
-        <SheetContent side="left" className="border-none bg-white">
-          <Link href="/" className="flex items-center gap-1 px-4 cursor-pointer">
+
+        <SheetContent
+          side="left"
+          className="border-none bg-white pt-6"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 mb-6">
             <Image
               src="/icons/logo.svg"
               width={34}
               height={34}
-              alt="Horizon logo"
+              alt="FintechHub logo"
             />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
+            <h1 className="text-2xl font-ibm-plex-serif font-bold text-black-1">
               FintechHub
             </h1>
           </Link>
-          <div className="mobilenav-sheet">
-            <nav className="flex flex-col gap-6 pt-16 h-full">
-              {sidebarLinks.map((item) => {
-                const isActive =
-                  pathname === item.route ||
-                  pathname.startsWith(`${item.route}/`);
 
-                return (
-                  <SheetClose asChild key={item.route}>
-                    <Link
-                      href={item.route}
-                      className={cn(
-                        'mobilenav-sheet_close w-full flex items-center gap-3 px-4 py-2 rounded transition',
-                        {
-                          'bg-bank-gradient': isActive,
-                        }
-                      )}
-                    >
-                      <Image
-                        src={item.imgURL}
-                        alt={item.label}
-                        width={20}
-                        height={20}
-                        className={cn({
-                          'brightness-[3] invert-0': isActive,
-                        })}
-                      />
-                      <p
-                        className={cn(
-                          'text-16 font-semibold text-black-2',
-                          { 'text-white': isActive }
-                        )}
-                      >
-                        {item.label}
-                      </p>
-                    </Link>
-                  </SheetClose>
-                );
-              })}
-            </nav>
-            <Footer type="mobile" />
+          {/* Profile Section */}
+          <div className="flex flex-col gap-3 mb-6 px-2">
+            <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-semibold shadow-md border-2 border-white mx-auto">
+              {user?.firstName?.[0] || 'U'}
+            </div>
+
+            <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col">
+                <h1 className="text-base font-semibold text-black-1 truncate">
+                  {user?.firstName || 'Guest'}
+                </h1>
+                <p className="text-sm text-gray-600 truncate">
+                  {user?.email || 'guest@example.com'}
+                </p>
+              </div>
+
+              <button
+                onClick={handleLogOut}
+                className="ml-4 shrink-0"
+              >
+                <Image src="/icons/logout.svg" width={24} height={24} alt="Logout" />
+              </button>
+            </div>
           </div>
+
+          {/* Divider */}
+          <div className="h-px bg-gray-300 w-full mb-4" />
+
+          {/* Navigation Links */}
+          <nav className="flex flex-col gap-4 flex-1 overflow-y-auto">
+            {sidebarLinks.map((item) => {
+              const isActive =
+                pathname === item.route || pathname.startsWith(`${item.route}/`);
+
+              return (
+                <SheetClose asChild key={item.route}>
+                  <Link
+                    href={item.route}
+                    className={cn(
+                      'flex items-center gap-3 px-4 py-2 rounded-md transition-all hover:bg-gray-100',
+                      {
+                        'bg-bank-gradient text-white': isActive,
+                      }
+                    )}
+                  >
+                    <Image
+                      src={item.imgURL}
+                      alt={item.label}
+                      width={20}
+                      height={20}
+                      className={cn({
+                        'brightness-[3] invert-0': isActive,
+                      })}
+                    />
+                    <span
+                      className={cn('text-base font-medium', {
+                        'text-white': isActive,
+                        'text-black-2': !isActive,
+                      })}
+                    >
+                      {item.label}
+                    </span>
+                  </Link>
+                </SheetClose>
+              );
+            })}
+          </nav>
         </SheetContent>
       </Sheet>
     </section>
