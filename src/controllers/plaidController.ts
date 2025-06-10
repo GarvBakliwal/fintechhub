@@ -58,18 +58,11 @@ export const storeTransactions = async (userId: string, accessToken: string) => 
                         accountId: tx.account_id,
                         transactionId: tx.transaction_id,
                         name: tx.name,
-                        // merchant_name: tx.merchant_name,
-                        // website: tx.website,
                         amount: tx.amount,
-                        // iso_currency_code: tx.iso_currency_code,
                         date: tx.date,
-                        // authorized_date: tx.authorized_date,
                         category: tx.personal_finance_category?.primary,
                         payment_channel: tx.payment_channel,
                         pending: tx.pending,
-                        // logo_url: tx.logo_url,
-                        // personal_finance_category: tx.personal_finance_category,
-                        // counterparties: tx.counterparties?.slice(),
                     },
                     { upsert: true, new: true }
                 )
