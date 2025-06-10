@@ -392,8 +392,8 @@
   }
 
   .mobilenav-profile .profile-avatar {
-  @apply text-2xl font-bold text-blue-500 bg-gray-200 rounded-full flex items-center justify-center w-14 h-14 shadow;
-}
+    @apply text-2xl font-bold text-blue-500 bg-gray-200 rounded-full flex items-center justify-center w-14 h-14 shadow;
+  }
 
   .mobilenav-profile .profile-details {
     @apply text-center;

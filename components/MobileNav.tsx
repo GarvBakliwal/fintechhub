@@ -45,41 +45,50 @@ const MobileNav = () => {
           className="border-none bg-white pt-6"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 mb-6">
-            <Image
-              src="/icons/logo.svg"
-              width={34}
-              height={34}
-              alt="FintechHub logo"
-            />
-            <h1 className="text-2xl font-ibm-plex-serif font-bold text-black-1">
-              FintechHub
-            </h1>
-          </Link>
+          {/* Logo and Title Removed */}
 
-          {/* Profile Section */}
-          <div className="flex flex-col gap-3 mb-6 px-2">
-            <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-semibold shadow-md border-2 border-white mx-auto">
-              {user?.firstName?.[0] || 'U'}
+          {/* Profile Section with Bottom Fade */}
+          <div className="relative mb-6 overflow-hidden">
+            {/* Background Image */}
+            <div className="absolute inset-0 w-full h-full">
+              <Image
+                src="/icons/gradient-mesh.svg"
+                alt="Profile Background"
+                layout="fill"
+                objectFit="cover"
+              />
             </div>
 
-            <div className="flex items-center justify-between w-full">
-              <div className="flex flex-col">
-                <h1 className="text-base font-semibold text-black-1 truncate">
-                  {user?.firstName || 'Guest'}
-                </h1>
-                <p className="text-sm text-gray-600 truncate">
-                  {user?.email || 'guest@example.com'}
-                </p>
+            {/* Soft blur overlay */}
+            <div className="absolute inset-0 bg-white/30 backdrop-blur-md" />
+
+            {/* Bottom fade mask */}
+            <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent z-20" />
+
+            {/* Profile Content */}
+            <div className="relative z-10 flex flex-col gap-3 px-4 py-6">
+              <div className="w-14 h-14 rounded-full bg-white text-blue-600 flex items-center justify-center text-xl font-semibold shadow-md border-4 border-gray-100 mx-auto">
+                {user?.firstName?.[0] || 'U'}
               </div>
 
-              <button
-                onClick={handleLogOut}
-                className="ml-4 shrink-0"
-              >
-                <Image src="/icons/logout.svg" width={24} height={24} alt="Logout" />
-              </button>
+              <div className="flex items-center justify-between w-full">
+                <div className="flex flex-col text-black">
+                  <h1 className="text-base font-semibold truncate">
+                    {user?.firstName || 'Guest'}
+                  </h1>
+                  <p className="text-sm truncate">{user?.email || 'guest@example.com'}</p>
+                </div>
+
+                <button onClick={handleLogOut} className="ml-4 shrink-0">
+                  <Image
+                    src="/icons/logout.svg"
+                    width={24}
+                    height={24}
+                    alt="Logout"
+                    className="opacity-70"
+                  />
+                </button>
+              </div>
             </div>
           </div>
 

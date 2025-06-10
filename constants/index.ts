@@ -50,48 +50,55 @@ export const ITEMS = [
 ];
 
 export const topCategoryStyles = {
-  Travel: {
+  TRAVEL: {
     bg: "bg-green-50",
     circleBg: "bg-green-100",
     text: { main: "text-green-700", count: "text-green-700" },
     progress: { bg: "bg-green-100", indicator: "bg-green-500" },
-    icon: "/icons/coins.svg",
+    icon: "/icons/travel.svg",
   },
-  "Food and Drink": {
+  TRANSPORTATION: {
+    bg: "bg-yellow-50",
+    circleBg: "bg-yellow-100",
+    text: { main: "text-yellow-600", count: "text-yellow-600" },
+    progress: { bg: "bg-yellow-100", indicator: "bg-yellow-500" },
+    icon: "/icons/transportation.svg",
+  },
+  "FOOD_AND_DRINK": {
     bg: "bg-blue-50",
     circleBg: "bg-blue-100",
     text: { main: "text-blue-700", count: "text-blue-700" },
     progress: { bg: "bg-blue-100", indicator: "bg-blue-500" },
-    icon: "/icons/monitor.svg",
+    icon: "/icons/food-and-drink.svg",
   },
-  Transfer: {
-    bg: "bg-pink-50",
-    circleBg: "bg-pink-100",
-    text: { main: "text-pink-700", count: "text-pink-700" },
-    progress: { bg: "bg-pink-100", indicator: "bg-pink-500" },
-    icon: "/icons/coins.svg",
+  "LOAN_PAYMENTS": {
+    bg: "bg-red-50",
+    circleBg: "bg-red-100",
+    text: { main: "text-red-700", count: "text-red-700" },
+    progress: { bg: "bg-red-100", indicator: "bg-red-500" },
+    icon: "/icons/loan-payment.svg",
   },
-  Payment: {
+  INCOME: {
+    bg: "bg-green-50",
+    circleBg: "bg-green-100",
+    text: { main: "text-green-700", count: "text-green-700" },
+    progress: { bg: "bg-green-100", indicator: "bg-green-500" },
+    icon: "/icons/income.svg",
+  },
+  default: {
     bg: "bg-purple-50",
     circleBg: "bg-purple-100",
     text: { main: "text-purple-700", count: "text-purple-700" },
-    progress: { bg: "bg-purple-100", indicator: "bg-purple-500" },
-    icon: "/icons/payment.svg",
-  },
-  default: {
-    bg: "bg-gray-50",
-    circleBg: "bg-gray-100",
-    text: { main: "text-gray-700", count: "text-gray-700" },
-    progress: { bg: "bg-gray-100", indicator: "bg-gray-400" },
-    icon: "/icons/bank-transfer.svg",
+    progress: { bg: "bg-purple-100", indicator: "bg-purple-400" },
+    icon: "/icons/default.svg",
   },
 };
 
 export const transactionCategoryStyles = {
-  "Food and Drink": {
-    borderColor: "border-pink-600",
-    backgroundColor: "bg-pink-500",
-    textColor: "text-pink-700",
+  "FOOD_AND_DRINK": {
+    borderColor: "border-blue-600",
+    backgroundColor: "bg-blue-500",
+    textColor: "text-blue-700",
     chipBackgroundColor: "bg-inherit",
   },
   Payment: {
@@ -100,13 +107,13 @@ export const transactionCategoryStyles = {
     textColor: "text-success-700",
     chipBackgroundColor: "bg-inherit",
   },
-  "Bank Fees": {
+  "INCOME": {
     borderColor: "border-success-600",
     backgroundColor: "bg-green-600",
     textColor: "text-success-700",
     chipBackgroundColor: "bg-inherit",
   },
-  Transfer: {
+  "LOAN_PAYMENTS": {
     borderColor: "border-red-700",
     backgroundColor: "bg-red-700",
     textColor: "text-red-700",
@@ -124,16 +131,22 @@ export const transactionCategoryStyles = {
     textColor: "text-[#027A48]",
     chipBackgroundColor: "bg-[#ECFDF3]",
   },
-  Travel: {
-    borderColor: "border-[#0047AB]",
-    backgroundColor: "bg-blue-500",
-    textColor: "text-blue-700",
+  TRANSPORTATION: {
+    borderColor: "border-yellow-400",
+    backgroundColor: "bg-yellow-200",
+    textColor: "text-yellow-400",
+    chipBackgroundColor: "bg-[#ECFDF3]",
+  },
+  TRAVEL: {
+    borderColor: "border-yellow-800",
+    backgroundColor: "bg-yellow-800",
+    textColor: "text-yellow-600",
     chipBackgroundColor: "bg-[#ECFDF3]",
   },
   default: {
-    borderColor: "",
-    backgroundColor: "bg-blue-500",
-    textColor: "text-blue-700",
+    borderColor: "border-purple-700",
+    backgroundColor: "bg-purple-500",
+    textColor: "text-purple-700",
     chipBackgroundColor: "bg-inherit",
   },
 };
