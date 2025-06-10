@@ -10,6 +10,7 @@ const MyBanks = () => {
   const accounts = useGlobalStore((state) => state.accounts);
   const setAccounts = useGlobalStore((state) => state.setAccounts);
   const user = useGlobalStore((state) => state.user);
+  const setUser = useGlobalStore((state) => state.setUser);
   const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(accounts.length === 0);
@@ -23,6 +24,7 @@ const MyBanks = () => {
       try {
         const data = await getData();
         setAccounts(data.accounts || []);
+        setUser(data.user);
         const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
         setSelectedAccountId(firstAccountId);
       } catch (err) {
