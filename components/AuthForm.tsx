@@ -36,33 +36,24 @@ const AuthForm = ({ type }: { type: string }) => {
   const { open, ready } = usePlaidLink({
     token: linkToken || '',
     onSuccess: async (public_token: string) => {
-      console.log('[PLAID] onSuccess - Public Token:', public_token);
       try {
         await exchangePublicToken({ public_token });
-        console.log('[PLAID] Token exchanged successfully. Redirecting...');
         router.push('/');
       } catch (err) {
-        console.error('[PLAID] Exchange failed:', err);
         setError('Bank connection failed. Please try again.');
       }
     },
     onExit: (err) => {
-      if (err) {
-        console.warn('[PLAID] Link exited with error:', err);
-        setError('Plaid flow exited unexpectedly.');
-      }
+      if (err) setError('Plaid flow exited unexpectedly.');
     },
-    onEvent: (eventName, metadata) => {
-      console.log('[PLAID] Event:', eventName, metadata);
-    },
+    onEvent: () => {},
   });
 
   useEffect(() => {
     if (linkToken && ready) {
-      console.log('[PLAID] Opening link automatically...');
       open();
     }
-  }, [linkToken, ready]);
+  }, [linkToken, ready, open]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -70,26 +61,18 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       if (type === 'sign-up') {
-        console.log(`${process.env.BACKEND_URL}`);
-        console.log('[AUTH] Signing up user with data:', data);
         const userData = await signUpUser(data);
         localStorage.setItem('token', userData.token);
-        console.log('[AUTH] User signed up. Token stored.');
-
-        const tokenRes = await createLinkToken(); // no userId needed
+        const tokenRes = await createLinkToken();
         setLinkToken(tokenRes.linkToken);
-        console.log('[PLAID] Link token created:', tokenRes.linkToken);
       }
 
       if (type === 'sign-in') {
-        console.log('[AUTH] Signing in user...');
         const userData = await loginUser(data);
         localStorage.setItem('token', userData.token);
-        console.log('[AUTH] User signed in. Redirecting...');
         router.push('/');
       }
     } catch (err: any) {
-      console.error('[AUTH] Error:', err);
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
@@ -101,13 +84,20 @@ const AuthForm = ({ type }: { type: string }) => {
   };
 
   return (
-    <section className="auth-form flex flex-col items-center justify-center min-h-screen bg-gray-50 px-6 py-12">
+    <section className="auth-form flex flex-col items-center justify-center min-h-screen bg-[#f4f8fd] px-2 py-8">
       <header className="mb-8 text-center">
         <Link href="/">
-          <Image src="/icons/logo.svg" width={50} height={50} alt="Logo" className="mx-auto mb-4" />
+          <Image
+            src="/icons/logo.svg"
+            width={64}
+            height={64}
+            alt="Logo"
+            className="mx-auto mb-4"
+            priority
+          />
         </Link>
-        <h1 className="text-2xl font-bold text-gray-800">{type === 'sign-in' ? 'Sign In' : 'Sign Up'}</h1>
-        <p className="text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">{type === 'sign-in' ? 'Sign In' : 'Sign Up'}</h1>
+        <p className="text-base text-gray-600">
           {type === 'sign-in'
             ? 'Welcome back! Please enter your credentials to sign in.'
             : 'Create an account to get started.'}
@@ -118,7 +108,7 @@ const AuthForm = ({ type }: { type: string }) => {
 
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full max-w-md bg-white rounded-lg shadow-md p-6 space-y-4"
+        className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-5"
       >
         {type === 'sign-up' && (
           <>
@@ -132,7 +122,7 @@ const AuthForm = ({ type }: { type: string }) => {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg py-3 px-4 rounded-lg flex items-center justify-center transition"
         >
           {isLoading ? (
             <>
@@ -144,18 +134,18 @@ const AuthForm = ({ type }: { type: string }) => {
         </Button>
       </form>
 
-      <p className="mt-4 text-sm text-gray-600">
+      <p className="mt-6 text-base text-gray-600">
         {type === 'sign-in' ? (
           <>
             Don’t have an account?{' '}
-            <Link href="/sign-up" className="text-blue-600 hover:underline">
+            <Link href="/sign-up" className="text-blue-600 hover:underline font-medium">
               Sign Up
             </Link>
           </>
         ) : (
           <>
             Already have an account?{' '}
-            <Link href="/sign-in" className="text-blue-600 hover:underline">
+            <Link href="/sign-in" className="text-blue-600 hover:underline font-medium">
               Sign In
             </Link>
           </>
@@ -165,10 +155,7 @@ const AuthForm = ({ type }: { type: string }) => {
       {/* Manual fallback if auto Plaid open fails */}
       {linkToken && (
         <Button
-          onClick={() => {
-            console.log('[PLAID] Manual button clicked');
-            if (ready) open();
-          }}
+          onClick={() => ready && open()}
           disabled={!ready}
           className="mt-6 bg-green-600 hover:bg-green-700 text-white"
         >

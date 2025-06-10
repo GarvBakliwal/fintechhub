@@ -13,11 +13,19 @@ export default function RootLayout({
 
       <div className="flex size-full flex-col">
         <div className="root-layout">
-          <Image src="/icons/logo.svg" width={30} height={30} alt="logo" />
-          <div>
+          {/* Left side: Logo + Site name */}
+          <div className="flex items-center gap-2">
+            <Image src="/icons/logo.svg" width={30} height={30} alt="logo" />
+            <span className="text-xl font-semibold text-black">FintechHub</span>
+          </div>
+
+          {/* Right side: Hamburger */}
+          <div className="ml-auto">
             <MobileNav />
           </div>
         </div>
+
+        {/* Page content */}
         {children}
       </div>
     </main>
