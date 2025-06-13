@@ -1,4 +1,4 @@
-# 🛠️ Backend - Personal Finance API
+# 🛠️ FintechHub - Backend
 
 A robust, secure, and scalable RESTful API built with Node.js and Express.js to serve as the backbone for the Personal Finance Dashboard. This API handles user authentication, integrates with the Plaid API for banking data, and manages all financial transactions and account information. It's designed with security best practices and modularity in mind.
 
