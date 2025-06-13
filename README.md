@@ -2,45 +2,79 @@
 
 A robust, secure, and scalable RESTful API built with Node.js and Express.js to serve as the backbone for the Personal Finance Dashboard. This API handles user authentication, integrates with the Plaid API for banking data, and manages all financial transactions and account information. It's designed with security best practices and modularity in mind.
 
+
 ## 🗒️ Table of Contents
-* [🔐 Features](#-features)
-* [🧰 Tech Stack](#-tech-stack)
-* [📁 Folder Structure](#-folder-structure)
-* [📦 Installation](#-installation)
-* [🗂️ Environment Configuration (.env)](#-environment-configuration-env)
-* [🧪 Development](#-development)
-* [🚀 API Endpoints](#-api-endpoints)
-* [🔒 Security Measures](#-security-measures)
-* [🤝 Contributing](#-contributing)
-* [📜 License](#-license)
+
+* 🔐 [Features](#-features)
+
+* 🧰 [Tech Stack](#-tech-stack)
+
+* 📁 [Folder Structure](#-folder-structure)
+
+* 📦 [Installation](#-installation)
+
+* 🗂️ [Environment Configuration](#-environment-configuration)
+
+* 🧪 [Development](#-development)
+
+* 🚀 [API Endpoints](#-api-endpoints)
+
+* 🔒 [Security Measures](#-security-measures)
+
+* 🤝 [Contributing](#-contributing)
+
+* 📜 [License](#-license)
+
 
 ---
+
 
 ## 🔐 Features
 
 * **JWT Authentication:** Secure user authentication using JSON Web Tokens for stateless and scalable sessions.
-* **OAuth Integration:** Seamlessly authenticate users via Google OAuth using Passport.js.
+
 * **MongoDB with Mongoose:** Persistent data storage using a NoSQL database (MongoDB) with Mongoose ODM for structured data management.
+
 * **Plaid API Integration:** Connects to the Plaid API to securely fetch and manage user financial accounts and transaction data.
+
 * **RESTful API Design:** Follows REST principles for clear, predictable, and scalable API endpoints.
+
 * **Security Best Practices:** Includes rate limiting, CORS configuration, and Helmet for setting secure HTTP headers.
+
 * **Comprehensive Error Handling:** Robust error handling mechanisms to provide meaningful feedback.
----
-## 🧰 Tech Stack
-* **Node.js:** JavaScript runtime for building the server-side application.
-* **Express.js:** Fast, unopinionated, minimalist web framework for Node.js.
-* **MongoDB:** NoSQL database for storing user, authentication, and financial data.
-* **Mongoose:** MongoDB object data modeling (ODM) for Node.js.
-* **Passport.js:** Authentication middleware for Node.js, used specifically for Google OAuth strategy.
-* **Plaid Node.js SDK:** Official SDK for interacting with the Plaid API.
-* **bcryptjs:** For secure password hashing.
-* **jsonwebtoken:** For generating and verifying JSON Web Tokens.
-* **dotenv:** To load environment variables from a .env file.
-* **cors:** Node.js middleware for enabling Cross-Origin Resource Sharing.
-* **helmet:** Helps secure Express apps by setting various HTTP headers.
+
+  
 ---
 
+
+## 🧰 Tech Stack
+
+* **Node.js:** JavaScript runtime for building the server-side application.
+  
+* **Express.js:** Fast, unopinionated, minimalist web framework for Node.js.
+
+* **MongoDB:** NoSQL database for storing user, authentication, and financial data.
+
+* **Mongoose:** MongoDB object data modeling (ODM) for Node.js.
+
+* **Plaid Node.js SDK:** Official SDK for interacting with the Plaid API.
+
+* **bcryptjs:** For secure password hashing.
+
+* **jsonwebtoken:** For generating and verifying JSON Web Tokens.
+
+* **dotenv:** To load environment variables from a .env file.
+
+* **cors:** Node.js middleware for enabling Cross-Origin Resource Sharing.
+
+* **helmet:** Helps secure Express apps by setting various HTTP headers.
+
+  
+---
+
+
 ## 📁 Folder Structure
+
 The backend application is structured for clarity, maintainability, and scalability:
 ```
 src/
@@ -73,26 +107,36 @@ src/
 ├── .env.example                  # Example environment variables file.
 └── package.json                  # Project dependencies and scripts.
 ```
+
+
 ---
+
+
 ## 📦 Installation
 To set up the backend API on your local machine:
 
 * Clone the repository:
 ```Bash
-git clone [https://github.com/GarvBakliwal/FintechHubBackend.git](https://github.com/GarvBakliwal/FintechHubBackend.git)
+git clone https://github.com/GarvBakliwal/FintechHubBackend.git
 cd FintechHubBackend
 ```
-Note: If you cloned the monorepo, navigate into the backend directory first.
+> Note: If you cloned the monorepo, navigate into the backend directory first.
+
 * Install dependencies:
 ```Bash
 npm install
 # or yarn install
 # or pnpm install
 ```
+
+
 ---
 
-## 🗂️ Environment Configuration (.env)
+
+## 🗂️ Environment Configuration
+
 Create a .env file in the backend/ directory based on the .env.example provided. These variables are essential for the API to connect to the database, secure tokens, and interact with external services.
+
 ```
 PORT=8000 # The port your Express app will listen on
 
@@ -111,8 +155,12 @@ PLAID_ENV=sandbox # Options: sandbox, development, production
 SITE_URL=http://localhost:3000 # Your frontend application's URL (e.g., http://localhost:3000 or https://your-domain.com)
 ```
 
-    > ✅ Security Note: Never commit your .env file to version control. It contains sensitive API keys and secrets. `.gitignore` should already be configured to exclude it.
+> ✅ Security Note: Never commit your .env file to version control. It contains sensitive API keys and secrets. `.gitignore` should already be configured to exclude it.
+
+
 ---
+
+
 ## 🧪 Development
 To run the backend API in development mode with hot-reloading (using nodemon):
 
@@ -121,9 +169,11 @@ npm run dev
 # or yarn dev
 # or pnpm dev
 ```
-The API server will typically start on http://localhost:8000 (or the PORT specified in your .env).
+> The API server will typically start on http://localhost:8080 (or the PORT specified in your .env).
+
 
 ---
+
 
 ## 🚀 API Endpoints
 The API provides the following core endpoints:
