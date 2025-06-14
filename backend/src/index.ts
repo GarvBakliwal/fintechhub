@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000', `${process.env.SITE_URL}`,'https://fintechhub.site','http://fintechhub.site'],
+    origin: ['http://localhost:3000', `${process.env.SITE_URL}`,`${process.env.SITE_URL}:3000`,'https://fintechhub.site','http://fintechhub.site'],
     credentials: true
 }));
 app.use(helmet());
