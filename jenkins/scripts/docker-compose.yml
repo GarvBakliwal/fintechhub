@@ -1,0 +1,40 @@
+services:
+  frontend:
+    image: garvbakliwal/fintechhub-frontend:latest
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - fintechhub-network
+
+  backend:
+    image: garvbakliwal/fintechhub-backend:latest
+    container_name: backend
+    restart: always
+    depends_on:
+      - mongo
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env.production
+    networks:
+      - fintechhub-network
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - fintechhub-network
+
+volumes:
+  mongo-data:
+
+networks:
+  fintechhub-network:
+    driver: bridge

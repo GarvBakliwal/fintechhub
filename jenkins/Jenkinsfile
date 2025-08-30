@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    
+    
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/GarvBakliwal/fintechhub.git'
+            }
+        }
+        stage('Copying Env Files') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''cp /root/frontend/.env.production /var/lib/jenkins/workspace/${JOB_NAME}/frontend/
+cp /root/backend/.env.production /var/lib/jenkins/workspace/${JOB_NAME}/backend/''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+        stage('Building Frontend Image') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker build -t garvbakliwal/fintechhub-frontend:${BUILD_ID} /var/lib/jenkins/workspace/${JOB_NAME}/frontend/', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+        stage('Building Backend Image') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'docker build -t garvbakliwal/fintechhub-backend:${BUILD_ID} /var/lib/jenkins/workspace/${JOB_NAME}/backend/', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+        stage('Pushing Images to Registry Server') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''docker tag garvbakliwal/fintechhub-frontend:${BUILD_ID} garvbakliwal/fintechhub-frontend:latest
+docker push garvbakliwal/fintechhub-frontend:${BUILD_ID}
+docker push garvbakliwal/fintechhub-frontend:latest
+docker rmi garvbakliwal/fintechhub-frontend:${BUILD_ID}
+
+docker tag garvbakliwal/fintechhub-backend:${BUILD_ID} garvbakliwal/fintechhub-backend:latest
+docker push garvbakliwal/fintechhub-backend:${BUILD_ID}
+docker push garvbakliwal/fintechhub-backend:latest
+docker rmi garvbakliwal/fintechhub-backend:${BUILD_ID}
+''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+        stage('Deploying Containers') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''docker compose down
+docker compose build 
+docker compose up -d''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+    }
+}
