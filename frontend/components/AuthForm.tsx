@@ -84,7 +84,7 @@ const AuthForm = ({ type }: { type: string }) => {
   };
 
   return (
-    <section className="auth-form flex flex-col items-center justify-center min-h-screen bg-[#f4f8fd] px-2 py-8">
+    <section className="auth-form flex flex-col items-center justify-center min-h-screen bg-white px-2 py-8">
       <header className="mb-8 text-center">
         <Link href="/">
           <Image

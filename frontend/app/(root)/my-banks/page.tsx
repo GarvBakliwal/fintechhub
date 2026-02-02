@@ -52,30 +52,33 @@ const MyBanks = () => {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <section className="w-full p-4">
-      <HeaderBox
-        title="Your Banks"
-        subtext="All your connected bank accounts"
-      />
 
-      {/* Add Bank Button for mobile */}
-      <div className="flex justify-end mt-4 md:hidden">
-        <button
-          type="button"
-          className="flex gap-2 items-center"
-          onClick={handleAddBank}
-          disabled={plaidLoading}
-        >
-          <Image src="/icons/plus.svg" width={20} height={20} alt="plus" />
-          <h2 className="text-14 font-semibold text-gray-600">Add Bank</h2>
-          {plaidLoading && (
-            <Spinner size="small" show className="ml-2 text-blue-600" />
-          )}
-        </button>
+    <section className="my-banks">
+      <div className="flex items-center justify-between">
+        <HeaderBox
+          title="Your Banks"
+          subtext="All your connected bank accounts"
+        />
+
+        {/* Add Bank Button for mobile */}
+        <div className="flex justify-end md:hidden">
+          <button
+            type="button"
+            className="flex gap-2 items-center"
+            onClick={handleAddBank}
+            disabled={plaidLoading}
+          >
+            <Image src="/icons/plus.svg" width={20} height={20} alt="plus" />
+            <h2 className="text-14 font-semibold text-gray-600">Add Bank</h2>
+            {plaidLoading && (
+              <Spinner size="small" show className="ml-2 text-blue-600" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Bank Cards */}
-      <div className="flex flex-col gap-6 mt-6">
+      <div className="flex flex-wrap gap-6 mt-6">
         {accounts.map((acc) => (
           <BankCard
             key={acc._id}
@@ -85,7 +88,7 @@ const MyBanks = () => {
           />
         ))}
       </div>
-    </section>
+    </section >
   );
 };
 

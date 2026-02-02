@@ -1,42 +1,56 @@
 "use client";
+
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const pathname = usePathname();
   const isSignUp = pathname === "/sign-up";
 
   return (
-    <main
-      className={`flex min-h-screen w-full font-inter ${
-        isSignUp ? "flex-row-reverse" : "flex-row"
-      }`}
-    >
-      {/* Auth Form Section */}
-      <section className="flex w-full md:w-1/2 justify-center items-center bg-[#f4f8fd]">
-        <div className="w-full max-w-md flex flex-col justify-center items-center px-4 sm:px-8">
-          {children}
-        </div>
-      </section>
-      {/* Image Section - hidden on mobile */}
-      <aside className="hidden md:flex w-1/2 justify-center items-center bg-[#f4f8fd]">
-        <div className="flex justify-center items-center w-full h-full">
-          <div className="relative bg-white rounded-2xl shadow-2xl border-2 border-gray-200 p-4 max-w-[480px] w-[75%] h-[75%] flex justify-center items-center">
+    <main className="relative min-h-screen w-full font-inter overflow-hidden bg-[#f4f8fd]">
+      {/* Desktop animated container */}
+      <div className="hidden md:block relative w-full h-screen">
+        {/* Auth Form */}
+        <section
+          className={`absolute top-0 left-0 w-1/2 h-full bg-white flex justify-center items-center
+          transition-transform duration-700 ease-in-out
+          ${isSignUp ? "translate-x-full" : "translate-x-0"}`}
+        >
+          <div className="w-full max-w-md px-8">
+            {children}
+          </div>
+        </section>
+
+        {/* Image */}
+        <aside
+          className={`absolute top-0 left-0 w-1/2 h-full bg-[#f4f8fd]
+          transition-transform duration-700 ease-in-out
+          ${isSignUp ? "translate-x-0" : "translate-x-full"}`}
+        >
+          <div className="relative w-full h-full overflow-hidden">
             <Image
               src="/icons/auth-image.png"
               alt="Auth image"
               fill
-              className="rounded-xl object-contain p-2"
               priority
-              style={{ background: "#fff" }}
+              className="object-cover transition-[object-position] duration-700"
+              style={{ objectPosition: isSignUp ? "right" : "left" }}
             />
           </div>
+        </aside>
+      </div>
+
+      {/* Mobile (no animation, clean) */}
+      <div className="md:hidden flex min-h-screen justify-center items-center bg-white">
+        <div className="w-full max-w-md px-4">
+          {children}
         </div>
-      </aside>
+      </div>
     </main>
   );
 }

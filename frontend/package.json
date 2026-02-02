@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@mantine/core": "^8.3.13",
+    "@mantine/hooks": "^8.3.13",
     "@radix-ui/react-dialog": "^1.1.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-progress": "^1.0.3",
@@ -20,6 +22,7 @@
     "chart.js": "^4.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.29.2",
     "lucide-react": "^0.374.0",
     "next": "^15.3.3",
     "plaid": "^35.0.0",

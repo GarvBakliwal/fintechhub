@@ -38,7 +38,7 @@ const RecentTransactions = () => {
       </header>
 
       {/* Tabs */}
-      <div className="flex border-b mb-4">
+      <div className="recent-transactions-tablist">
         {accounts.map((account) => (
           <button
             key={account.accountId || account._id}

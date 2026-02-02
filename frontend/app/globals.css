@@ -153,7 +153,7 @@
   }
 
   .recent-transactions-tablist {
-    @apply custom-scrollbar mb-8 flex w-full flex-nowrap;
+    @apply flex items-center h-[48px] border-b mb-4 overflow-x-auto overflow-y-hidden whitespace-nowrap scroll-smooth;
   }
 
   /* Right sidebar */
@@ -191,10 +191,10 @@
 
   /* My Banks */
   .my-banks {
-    @apply flex h-screen max-h-screen w-full flex-col gap-8 bg-gray-25 p-8 xl:py-12;
+    @apply flex h-screen  w-full flex-col gap-8 bg-gray-25 p-8 xl:py-12;
   }
 
-  /* My Banks */
+  /* Transaction History */
   .transactions {
     @apply flex max-h-screen w-full flex-col gap-8 overflow-y-scroll bg-gray-25 p-8 xl:py-12;
   }
@@ -412,7 +412,7 @@
   }
 }
 
-/* Smooth scrolling for all devices */
+/* Smooth scrolling for all devices
 html,
 body,
 .mobilenav-sheet {
@@ -421,30 +421,30 @@ body,
 }
 
 /* Custom scrollbar for mobile (WebKit browsers) */
-.mobilenav-sheet::-webkit-scrollbar {
+/* .mobilenav-sheet::-webkit-scrollbar {
   width: 6px;
   background: transparent;
-}
+} */
 
-.mobilenav-sheet::-webkit-scrollbar-thumb {
+/* .mobilenav-sheet::-webkit-scrollbar-thumb {
   background: #b3b3cc;
   border-radius: 8px;
   transition: background 0.3s;
-}
+} */
 
-.mobilenav-sheet::-webkit-scrollbar-thumb:hover,
+/* .mobilenav-sheet::-webkit-scrollbar-thumb:hover,
 .mobilenav-sheet::-webkit-scrollbar-thumb:active {
   background: #7878a3;
-}
+} */
 
 /* For Firefox */
-.mobilenav-sheet {
+/* .mobilenav-sheet {
   scrollbar-width: thin;
   scrollbar-color: #b3b3cc transparent;
-}
+} */
 
 /* Optional: fade-in scrollbar on scroll (WebKit only) */
-.mobilenav-sheet {
-  /* Hide scrollbar by default, show on scroll */
-  scrollbar-gutter: stable;
-}
+/* .mobilenav-sheet { */
+/* Hide scrollbar by default, show on scroll */
+/* scrollbar-gutter: stable;
+} */
