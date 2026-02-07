@@ -1,17 +1,6 @@
-version: '3.8'
+version: '4.0'
 
 services:
-  mongo:
-    image: mongo:6
-    container_name: mongo
-    restart: unless-stopped
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "27017:27017"
-    networks:
-      - fintech
-
   backend:
     build:
       context: ./backend
@@ -22,8 +11,6 @@ services:
       - "8000:8000"
     env_file:
       - ./backend/.env.production
-    depends_on:
-      - mongo
     networks:
       - fintech
 
@@ -41,9 +28,6 @@ services:
       - backend
     networks:
       - fintech
-
-volumes:
-  mongo_data:
 
 networks:
   fintech:
