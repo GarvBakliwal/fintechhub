@@ -1,6 +1,6 @@
-import MobileNav from "@/components/MobileNav";
 import MobileFloatingNav from "@/components/MobileFloatingNav";
 import Sidebar from "@/components/Sidebar";
+import Logout from "@/components/ui/logout";
 import Image from "next/image";
 
 export default function RootLayout({
@@ -23,9 +23,8 @@ export default function RootLayout({
             </span>
           </div>
 
-          {/* <div className="ml-auto">
-            <MobileNav />
-          </div> */}
+          <Logout/>
+          
         </header>
 
         {/* Page Content */}

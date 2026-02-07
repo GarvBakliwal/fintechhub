@@ -1,16 +1,15 @@
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useGlobalStore } from '@/store/globalStore';
 import { FooterProps } from '@/types';
+import Logout from './ui/logout';
 
 const Footer = ({ type = 'desktop' }: Omit<FooterProps, 'user'>) => {
   const router = useRouter();
   const user = useGlobalStore((state) => state.user);
 
   const handleLogOut = () => {
-    // Simulate logout by clearing user data and redirecting to sign-in
-    useGlobalStore.getState().logout?.(); // If you have a logout action in your store
+    useGlobalStore.getState().logout?.();
     localStorage.removeItem('token');
     router.push('/sign-in');
   };
@@ -32,9 +31,8 @@ const Footer = ({ type = 'desktop' }: Omit<FooterProps, 'user'>) => {
         </p>
       </div>
 
-      <div className="footer_image" onClick={handleLogOut}>
-        <Image src="/icons/logout.svg" width={24} height={24} alt="Logout" />
-      </div>
+      <Logout/>
+
     </footer>
   );
 };
