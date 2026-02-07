@@ -20,6 +20,28 @@ export const sidebarLinks = [
     label: "Transfer Funds",
   },
 ];
+export const mobileSidebarLinks = [
+  {
+    imgURL: "/icons/home.svg",
+    route: "/",
+    label: "Home",
+  },
+  {
+    imgURL: "/icons/dollar-circle.svg",
+    route: "/my-banks",
+    label: "Banks",
+  },
+  {
+    imgURL: "/icons/transaction.svg",
+    route: "/transaction-history",
+    label: "Transactions",
+  },
+  {
+    imgURL: "/icons/money-send.svg",
+    route: "/payment-transfer",
+    label: "Transfer",
+  },
+];
 
 // good_user / good_password - Bank of America
 export const TEST_USER_ID = "6627ed3d00267aa6fa3e";

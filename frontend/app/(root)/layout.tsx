@@ -28,7 +28,7 @@ export default function RootLayout({
         </header>
 
         {/* Page Content */}
-        <section className="flex-1 overflow-y-auto pb-24">
+        <section className="flex-1 overflow-y-auto pb-[140px] md:pb-0">
           {children}
         </section>
 
