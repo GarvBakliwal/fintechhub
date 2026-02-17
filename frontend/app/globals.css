@@ -113,7 +113,7 @@
   }
 
   .home-content {
-    @apply no-scrollbar flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll;
+    @apply flex w-full flex-1 flex-col gap-8 px-5 sm:px-8 py-7 lg:py-12 xl:max-h-screen xl:overflow-y-scroll;
   }
 
   .home-header {
@@ -191,7 +191,7 @@
 
   /* My Banks */
   .my-banks {
-    @apply flex h-screen  w-full flex-col gap-8 bg-gray-25 p-8 xl:py-12;
+    @apply flex h-screen w-full flex-col gap-8 bg-gray-25 p-8 xl:py-12;
   }
 
   /* Transaction History */

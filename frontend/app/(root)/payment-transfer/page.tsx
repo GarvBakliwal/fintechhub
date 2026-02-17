@@ -2,6 +2,7 @@
 import HeaderBox from '@/components/HeaderBox';
 import PaymentTransferForm from '@/components/PaymentTransferForm';
 import { Spinner } from '@/components/ui/loadingspinner';
+import ServerError from '@/components/ui/servererror';
 import { getData } from '@/services/data';
 import { useGlobalStore } from '@/store/globalStore';
 import { useEffect, useState } from 'react';
@@ -43,7 +44,13 @@ const Transfer = () => {
         </Spinner>
       </div>
     );
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (error)
+  return (
+    <ServerError
+      title="Transfer service unavailable"
+      message="Don't worry — your money is safe. Try again shortly."
+    />
+  );
 
   return (
     <section className="payment-transfer">

@@ -9,6 +9,7 @@ import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { getData } from '@/services/data';
 import { useGlobalStore } from '@/store/globalStore';
 import { Spinner } from '@/components/ui/loadingspinner'; // adjust the path if needed
+import ServerError from '@/components/ui/servererror';
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -48,8 +49,13 @@ const Home = () => {
         </Spinner>
       </div>
     );
-  if (error) return <p>{error}</p>;
-
+  if (error)
+    return (
+      <ServerError
+        title="Dashboard unavailable"
+        message="We couldn't load your financial overview. Please try again."
+      />
+    );
   return (
     <section className="home">
       <div className="home-content">

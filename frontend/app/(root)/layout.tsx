@@ -9,11 +9,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex h-screen w-full font-inter">
+    <main className="flex h-screen w-full font-inter overflow-x-hidden">
       {/* Desktop Sidebar */}
       <Sidebar />
 
-      <div className="flex size-full flex-col relative">
+      <div className="flex flex-1 flex-col relative min-w-0">
         {/* Top Header */}
         <header className="root-layout">
           <div className="flex items-center gap-2">

@@ -8,6 +8,7 @@ import { Spinner } from "@/components/ui/loadingspinner";
 import { getData } from "@/services/data";
 import { useGlobalStore } from "@/store/globalStore";
 import { useAddBank } from "@/services/addBank";
+import ServerError from "@/components/ui/servererror";
 
 const MyBanks = () => {
   const accounts = useGlobalStore((state) => state.accounts);
@@ -49,7 +50,13 @@ const MyBanks = () => {
         </Spinner>
       </div>
     );
-  if (error) return <div className="text-red-500">{error}</div>;
+  if (error)
+  return (
+    <ServerError
+      title="Banks not loading"
+      message="Unable to fetch your bank accounts right now."
+    />
+  );
 
   return (
 
