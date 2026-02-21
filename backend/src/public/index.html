@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FintechHub API Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">FintechHub API Docs<span class="logo-dot">.</span></span>
+    </div>
+    <div class="header-right">
+      <div class="base-url-badge">
+        <span class="base-url-label">Base URL</span>
+        <span class="base-url-value">https://api.fintechhub.com</span>
+      </div>
+      <span class="version-badge">v1.0</span>
+    </div>
+  </header>
+
+  <!-- API Groups -->
+  <main class="main">
+
+    <!-- Divider top -->
+    <div class="divider"></div>
+
+    <!-- 01 Auth -->
+    <div class="api-group" id="auth">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <div class="group-title">
+          <span class="group-name">Auth</span>
+          <span class="group-num">(01)</span>
+        </div>
+        <button class="expand-btn" aria-label="Expand section">
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="group-body">
+        <div class="group-inner">
+          <div class="endpoints-list">
+
+            <!-- Login -->
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/auth/login</span>
+                  <span class="endpoint-desc">Authenticate a user with email &amp; password. Returns a JWT access token
+                    and user profile.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Request Body</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"email"</span><span class="c-colon">:</span>    <span class="c-str">"user@example.com"</span><span class="c-sep">,</span>
+  <span class="c-key">"password"</span><span class="c-colon">:</span> <span class="c-str">"password123"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"message"</span><span class="c-colon">:</span> <span class="c-str">"Logged in successfully"</span><span class="c-sep">,</span>
+  <span class="c-key">"token"</span><span class="c-colon">:</span>   <span class="c-str">"JWT Token"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Register -->
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/auth/register</span>
+                  <span class="endpoint-desc">Create a new user account. Returns the created user object and an
+                    authentication token.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Request Body</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"username"</span><span class="c-colon">:</span> <span class="c-str">"user"</span><span class="c-sep">,</span>
+  <span class="c-key">"email"</span><span class="c-colon">:</span>    <span class="c-str">"user@example.com"</span><span class="c-sep">,</span>
+  <span class="c-key">"password"</span><span class="c-colon">:</span> <span class="c-str">"password123"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"message"</span><span class="c-colon">:</span> <span class="c-str">"User registered successfully"</span><span class="c-sep">,</span>
+  <span class="c-key">"token"</span><span class="c-colon">:</span>   <span class="c-str">"JWT Token"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 02 Accounts -->
+    <div class="api-group" id="accounts">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <div class="group-title">
+          <span class="group-name">Accounts</span>
+          <span class="group-num">(02)</span>
+        </div>
+        <button class="expand-btn" aria-label="Expand section">
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="group-body">
+        <div class="group-inner">
+          <div class="endpoints-list">
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge get">GET</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/accounts/</span>
+                  <span class="endpoint-desc">Retrieve a list of all bank accounts linked to the authenticated
+                    user.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge get">GET</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/accounts/:id</span>
+                  <span class="endpoint-desc">Retrieve a single bank account by its unique identifier.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge delete">DELETE</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/accounts/:id</span>
+                  <span class="endpoint-desc">Permanently remove a bank account by its unique identifier. Action is
+                    irreversible.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 03 Transactions -->
+    <div class="api-group" id="transactions">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <div class="group-title">
+          <span class="group-name">Transactions</span>
+          <span class="group-num">(03)</span>
+        </div>
+        <button class="expand-btn" aria-label="Expand section">
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="group-body">
+        <div class="group-inner">
+          <div class="endpoints-list">
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge get">GET</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/transactions</span>
+                  <span class="endpoint-desc">Fetch all transactions across all linked bank accounts for the
+                    authenticated user.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge get">GET</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/transactions/:accountId</span>
+                  <span class="endpoint-desc">Fetch all transactions belonging to a specific bank account by its account
+                    ID.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge get">GET</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/transactions/recent</span>
+                  <span class="endpoint-desc">Retrieve the last 10 transactions across all accounts. Used on the
+                    homepage dashboard.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 04 Transfers -->
+    <div class="api-group" id="transfers">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <div class="group-title">
+          <span class="group-name">Transfers</span>
+          <span class="group-num">(04)</span>
+        </div>
+        <button class="expand-btn" aria-label="Expand section">
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="group-body">
+        <div class="group-inner">
+          <div class="endpoints-list">
+
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/transfer/send</span>
+                  <span class="endpoint-desc">Initiate a payment transfer between two bank accounts. Requires sender ID,
+                    receiver ID, and amount.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 05 Homepage -->
+    <div class="api-group" id="homepage">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <div class="group-title">
+          <span class="group-name">Homepage</span>
+          <span class="group-num">(05)</span>
+        </div>
+        <button class="expand-btn" aria-label="Expand section">
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="group-body">
+        <div class="group-inner">
+          <div class="endpoints-list">
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge get">GET</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/data</span>
+                  <span class="endpoint-desc">Aggregate dashboard data — returns user profile, all accounts,
+                    transactions, total balance, and recent transactions in a single call.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="response-preview">
+            <div class="response-label">Response Shape</div>
+            <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"user"</span><span class="c-colon">:</span>             <span class="c-type">User</span><span class="c-sep">,</span>
+  <span class="c-key">"accounts"</span><span class="c-colon">:</span>         <span class="c-type">Account[]</span><span class="c-sep">,</span>
+  <span class="c-key">"recentTransactions"</span><span class="c-colon">:</span> <span class="c-type">Transaction[]</span>
+<span class="c-brace">}</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 06 Plaid -->
+    <div class="api-group" id="plaid">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <div class="group-title">
+          <span class="group-name">Plaid</span>
+          <span class="group-num">(06)</span>
+        </div>
+        <button class="expand-btn" aria-label="Expand section">
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="group-body">
+        <div class="group-inner">
+          <div class="endpoints-list">
+
+            <!-- create-link-token -->
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/create-link-token</span>
+                  <span class="endpoint-desc">Generate a Plaid Link token to initialize the Plaid Link flow for
+                    connecting a bank account.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Request Body</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"userId"</span><span class="c-colon">:</span> <span class="c-str">"&lt;userId&gt;"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"link_token"</span><span class="c-colon">:</span> <span class="c-str">"link-sandbox-..."</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- exchange-public-token -->
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path">/api/exchange-public-token</span>
+                  <span class="endpoint-desc">Exchange a short-lived public token (from Plaid Link) for a permanent
+                    access token to access account data.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">Authorization</span><span class="c-colon">:</span> <span class="c-str">Bearer &lt;token&gt;</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Request Body</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"publicToken"</span><span class="c-colon">:</span> <span class="c-str">"&lt;publicToken&gt;"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"message"</span><span class="c-colon">:</span>      <span class="c-str">"Plaid account linked successfully"</span><span class="c-sep">,</span>
+  <span class="c-key">"access_token"</span><span class="c-colon">:</span> <span class="c-str">"access-sandbox-..."</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- sandbox accounts/get -->
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path plaid-url">https://sandbox.plaid.com/accounts/get</span>
+                  <span class="endpoint-desc">Retrieve all accounts associated with a Plaid access token via the Plaid
+                    Sandbox environment.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">PLAID-CLIENT-ID</span><span class="c-colon">:</span> <span class="c-str">&lt;clientId&gt;</span>
+<span class="c-key">PLAID-SECRET</span><span class="c-colon">:</span>    <span class="c-str">&lt;secret&gt;</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Request Body</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"access_token"</span><span class="c-colon">:</span> <span class="c-str">"access-sandbox-..."</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"accounts"</span><span class="c-colon">:</span> <span class="c-brace">[{</span>
+    <span class="c-key">"account_id"</span><span class="c-colon">:</span>  <span class="c-str">"7AmwxXAGz6i..."</span><span class="c-sep">,</span>
+    <span class="c-key">"name"</span><span class="c-colon">:</span>         <span class="c-str">"Plaid Checking"</span><span class="c-sep">,</span>
+    <span class="c-key">"subtype"</span><span class="c-colon">:</span>     <span class="c-str">"checking"</span><span class="c-sep">,</span>
+    <span class="c-key">"mask"</span><span class="c-colon">:</span>         <span class="c-str">"0000"</span><span class="c-sep">,</span>
+    <span class="c-key">"balances"</span><span class="c-colon">:</span>    <span class="c-brace">{</span> <span class="c-key">"available"</span><span class="c-colon">:</span> <span class="c-type">100</span><span class="c-sep">,</span> <span class="c-key">"current"</span><span class="c-colon">:</span> <span class="c-type">110</span> <span class="c-brace">}</span>
+  <span class="c-brace">}</span><span class="c-sep">, ...</span><span class="c-brace">]</span><span class="c-sep">,</span>
+  <span class="c-key">"item"</span><span class="c-colon">:</span> <span class="c-brace">{</span>
+    <span class="c-key">"institution_name"</span><span class="c-colon">:</span> <span class="c-str">"Chase"</span><span class="c-sep">,</span>
+    <span class="c-key">"institution_id"</span><span class="c-colon">:</span>   <span class="c-str">"ins_56"</span><span class="c-sep">,</span>
+    <span class="c-key">"products"</span><span class="c-colon">:</span>         <span class="c-brace">[</span><span class="c-str">"auth"</span><span class="c-sep">,</span> <span class="c-str">"transactions"</span><span class="c-brace">]</span>
+  <span class="c-brace">}</span><span class="c-sep">,</span>
+  <span class="c-key">"request_id"</span><span class="c-colon">:</span> <span class="c-str">"pusJ3Cw4BvZp8JC"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- sandbox transactions/sync -->
+            <div class="endpoint-row endpoint-row--rich">
+              <span class="method-badge post">POST</span>
+              <div class="endpoint-info">
+                <div class="endpoint-top">
+                  <span class="endpoint-path plaid-url">https://sandbox.plaid.com/transactions/sync</span>
+                  <span class="endpoint-desc">Sync the latest transactions for linked accounts using Plaid's incremental
+                    transaction sync in the Sandbox environment.</span>
+                </div>
+                <div class="endpoint-samples">
+                  <div class="sample">
+                    <div class="sample-label">Headers</div>
+                    <pre
+                      class="code-block"><span class="c-key">PLAID-CLIENT-ID</span><span class="c-colon">:</span> <span class="c-str">&lt;clientId&gt;</span>
+<span class="c-key">PLAID-SECRET</span><span class="c-colon">:</span>    <span class="c-str">&lt;secret&gt;</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Request Body</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"access_token"</span><span class="c-colon">:</span> <span class="c-str">"access-sandbox-..."</span><span class="c-sep">,</span>
+  <span class="c-key">"cursor"</span><span class="c-colon">:</span>       <span class="c-str">"&lt;cursor&gt;"</span>  <span class="c-muted">// optional</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response (no cursor)</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"accounts"</span><span class="c-colon">:</span>  <span class="c-brace">[{</span> <span class="c-key">"account_id"</span><span class="c-colon">:</span> <span class="c-str">"dv93pg..."</span><span class="c-sep">, ...</span> <span class="c-brace">}]</span><span class="c-sep">,</span>
+  <span class="c-key">"added"</span><span class="c-colon">:</span>     <span class="c-brace">[{</span>
+    <span class="c-key">"transaction_id"</span><span class="c-colon">:</span>  <span class="c-str">"mdwXqJQBQg..."</span><span class="c-sep">,</span>
+    <span class="c-key">"merchant_name"</span><span class="c-colon">:</span>   <span class="c-str">"Uber"</span><span class="c-sep">,</span>
+    <span class="c-key">"amount"</span><span class="c-colon">:</span>          <span class="c-type">5.4</span><span class="c-sep">,</span>
+    <span class="c-key">"date"</span><span class="c-colon">:</span>            <span class="c-str">"2026-02-13"</span><span class="c-sep">,</span>
+    <span class="c-key">"iso_currency_code"</span><span class="c-colon">:</span> <span class="c-str">"USD"</span>
+  <span class="c-brace">}</span><span class="c-sep">, ...</span><span class="c-brace">]</span><span class="c-sep">,</span>
+  <span class="c-key">"has_more"</span><span class="c-colon">:</span>   <span class="c-type">false</span><span class="c-sep">,</span>
+  <span class="c-key">"next_cursor"</span><span class="c-colon">:</span> <span class="c-str">"CAESJWR2OTNw..."</span><span class="c-sep">,</span>
+  <span class="c-key">"modified"</span><span class="c-colon">:</span>   <span class="c-brace">[]</span><span class="c-sep">,</span>
+  <span class="c-key">"removed"</span><span class="c-colon">:</span>    <span class="c-brace">[]</span><span class="c-sep">,</span>
+  <span class="c-key">"request_id"</span><span class="c-colon">:</span> <span class="c-str">"sHLPP1JbKMAuw4U"</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                  <div class="sample">
+                    <div class="sample-label">Response (with cursor)</div>
+                    <pre class="code-block"><span class="c-brace">{</span>
+  <span class="c-key">"accounts"</span><span class="c-colon">:</span>    <span class="c-brace">[]</span><span class="c-sep">,</span>
+  <span class="c-key">"added"</span><span class="c-colon">:</span>       <span class="c-brace">[]</span><span class="c-sep">,</span>
+  <span class="c-key">"has_more"</span><span class="c-colon">:</span>    <span class="c-type">false</span><span class="c-sep">,</span>
+  <span class="c-key">"next_cursor"</span><span class="c-colon">:</span> <span class="c-str">"CAESJWR2OTNw..."</span><span class="c-sep">,</span>
+  <span class="c-key">"modified"</span><span class="c-colon">:</span>    <span class="c-brace">[]</span><span class="c-sep">,</span>
+  <span class="c-key">"removed"</span><span class="c-colon">:</span>     <span class="c-brace">[]</span><span class="c-sep">,</span>
+  <span class="c-key">"request_id"</span><span class="c-colon">:</span> <span class="c-str">"swp4xOpu3Mpu..."</span>
+<span class="c-brace">}</span></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+
+</html>
