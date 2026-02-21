@@ -7,7 +7,7 @@ import Transaction from '../models/transactionModel';
 import { AuthenticatedRequest } from '../middlewares/authMiddleware';
 
 export const storeAccounts = async (userId: string, accessToken: string) => {
-    const accountsRes = await plaidClient.accountsGet({ access_token: accessToken });
+    const accountsRes = await plaidClient.accountsBalanceGet({ access_token: accessToken });
     const accounts = accountsRes.data.accounts;
     const item = accountsRes.data.item;
 
@@ -25,7 +25,7 @@ export const storeAccounts = async (userId: string, accessToken: string) => {
                     subtype: acc.subtype,
                     current_balance: acc.balances.current,
                     holder_category: acc.holder_category,
-                    institution_name: item.institution_name,
+                    institution_name: item.institution_name
                 },
                 { upsert: true, new: true }
             )
@@ -36,17 +36,13 @@ export const storeAccounts = async (userId: string, accessToken: string) => {
 };
 
 export const storeTransactions = async (userId: string, accessToken: string) => {
-    const now = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(now.getDate() - 30);
 
-    const response = await plaidClient.transactionsGet({
-        access_token: accessToken,
-        start_date: thirtyDaysAgo.toISOString().split('T')[0],
-        end_date: now.toISOString().split('T')[0],
+    const response = await plaidClient.transactionsSync({
+        access_token: accessToken
     });
 
-    const transactions = response.data.transactions;
+    const transactions = response.data.added;
+    const cursor = response.data.next_cursor;
 
     await Promise.all(
         transactions.map(async tx => {
