@@ -22,6 +22,7 @@ export default function MobileFloatingNav() {
   return (
     <Box
       hiddenFrom="md"
+      className="md:hidden"
       style={{
         position: 'fixed',
         bottom: 'env(safe-area-inset-bottom)',
