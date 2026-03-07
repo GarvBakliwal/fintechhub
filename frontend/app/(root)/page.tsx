@@ -18,27 +18,26 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check for JWT token in localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
-      router.replace('/sign-in');
-      return;
-    }
+  const fetchData = async () => {
+    try {
+      const data = await getData();
+      useGlobalStore.getState().setAllData(data);
 
-    const fetchData = async () => {
-      try {
-        const data = await getData();
-        useGlobalStore.getState().setAllData(data);
-        const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
-        setSelectedAccountId(firstAccountId);
-      } catch (err) {
-        setError('Failed to load data.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [setSelectedAccountId, router]);
+      const firstAccountId =
+        data.accounts?.[0]?.id ||
+        data.accounts?.[0]?.accountId ||
+        "";
+
+      setSelectedAccountId(firstAccountId);
+    } catch {
+      setError("Failed to load data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, [setSelectedAccountId]);
 
 
   if (loading)

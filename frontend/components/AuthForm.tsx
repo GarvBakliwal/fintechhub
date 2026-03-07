@@ -46,7 +46,7 @@ const AuthForm = ({ type }: { type: string }) => {
     onExit: (err) => {
       if (err) setError('Plaid flow exited unexpectedly.');
     },
-    onEvent: () => {},
+    onEvent: () => { },
   });
 
   useEffect(() => {
@@ -56,32 +56,36 @@ const AuthForm = ({ type }: { type: string }) => {
   }, [linkToken, ready, open]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
-    setError(null);
+  setIsLoading(true);
+  setError(null);
 
-    try {
-      if (type === 'sign-up') {
-        const userData = await signUpUser(data);
-        localStorage.setItem('token', userData.token);
-        const tokenRes = await createLinkToken();
-        setLinkToken(tokenRes.linkToken);
-      }
+  try {
+    if (type === "sign-up") {
+      await signUpUser(data);
 
-      if (type === 'sign-in') {
-        const userData = await loginUser(data);
-        localStorage.setItem('token', userData.token);
-        router.push('/');
-      }
-    } catch (err: any) {
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else {
-        setError('An error occurred. Please try again.');
-      }
-    } finally {
-      setIsLoading(false);
+      const tokenRes = await createLinkToken();
+      setLinkToken(tokenRes.linkToken);
+
+      router.replace("/");
+      router.refresh();
     }
-  };
+
+    if (type === "sign-in") {
+      await loginUser(data);
+
+      router.replace("/");
+      router.refresh();
+    }
+  } catch (err: any) {
+    if (err.response?.data?.message) {
+      setError(err.response.data.message);
+    } else {
+      setError("An error occurred. Please try again.");
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <section className="auth-form flex flex-col items-center justify-center min-h-screen bg-white px-2 py-8">
