@@ -2,24 +2,39 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "../models/userModel"
 import bcrypt from 'bcryptjs'
 import { generateToken } from "../lib/jwt";
+
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? ("none" as const) : ("lax" as const),
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    path: "/",
+};
+
 export const signUp = async (req: Request, res: Response) => {
     try {
-        const newUser = new User(req.body);
-        const { email, password } = newUser;
+        const { email, password, firstName, lastName } = req.body;
         const isExistingUser = await User.findOne({ email });
         if (isExistingUser) {
             throw new Error("User Already Exists");
         }
+        const newUser = new User({
+            email,
+            password,
+            firstName,
+            lastName,
+        });
         const saveUser = await newUser.save();
-        const token = generateToken(`${newUser._id}`);
+        const token = generateToken(`${saveUser._id}`);
+        res.cookie("token", token, cookieOptions);
         res.status(200).json({
             message: "Login Successful",
             token,
             user: {
-                id: `${newUser._id}`,
-                firstName: `${newUser.firstName}`,
-                lastName: `${newUser.lastName}`,
-                email: `${newUser.email}`
+                id: `${saveUser._id}`,
+                firstName: `${saveUser.firstName}`,
+                lastName: `${saveUser.lastName}`,
+                email: `${saveUser.email}`
             }
         })
     } catch (error: any) {
@@ -29,7 +44,7 @@ export const signUp = async (req: Request, res: Response) => {
 
 export async function login(req: Request, res: Response) {
     try {
-        const { email, password } = new User(req.body);
+        const { email, password } = req.body;
         const isExistingUser = await User.findOne({ email });
         if (!isExistingUser) {
             throw new Error("User does not Exist!");
@@ -39,6 +54,8 @@ export async function login(req: Request, res: Response) {
             throw new Error("Password does not Match!");
         }
         const token = generateToken(`${isExistingUser._id}`);
+        res.cookie("token", token, cookieOptions);
+
         res.status(200).json({
             message: "Login Successful",
             token,
@@ -53,3 +70,17 @@ export async function login(req: Request, res: Response) {
         res.status(500).json({ message: error.message || "Something went Wrong" })
     }
 }
+
+
+export const logoutUser = (req: Request, res: Response) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/"
+    });
+
+    res.status(200).json({
+        message: "Logged out successfully",
+    });
+};

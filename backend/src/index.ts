@@ -6,6 +6,7 @@ import cors from 'cors'
 import helmet from 'helmet';
 import path from 'path';
 import healthRoutes from "./routes/healthRoutes";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use(
 app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use(express.json());
-
+app.use(cookieParser());
 app.use('/api', helmet());
 app.use('/api', routes);
 
