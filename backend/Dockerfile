@@ -22,6 +22,9 @@ RUN npm install --omit=dev
 # Copy compiled output and any needed assets
 COPY --from=builder /app/dist ./dist
 
+# Copy public folder
+COPY --from=builder /app/public ./public
+
 # Set environment
 ENV NODE_ENV=production
 
