@@ -20,8 +20,481 @@
   --post-bg: rgba(45, 125, 210, 0.12);
   --delete: #c94040;
   --delete-bg: rgba(201, 64, 64, 0.12);
+  --success: #1a9b6c;
+  --warning: #f1c40f;
+  --error: #c94040;
   --font: 'Inter', sans-serif;
   --mono: 'JetBrains Mono', monospace;
+}
+
+/* ─── Status Indicators ───────────────────────────────────────── */
+/* ─── System Health Section ───────────────────────────────────── */
+.system-health {
+  padding: 60px 0 30px;
+}
+
+.health-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .health-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .health-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .health-header {
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .health-title {
+    font-size: 1.85rem;
+    line-height: 1.1;
+  }
+
+  .health-title-group {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .last-checked {
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
+
+  .health-meta-group {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .health-meta {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    border-radius: 10px;
+  }
+
+  .uptime-group {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .uptime-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+
+  .uptime-value {
+    font-size: 0.8rem;
+    font-family: var(--mono);
+    font-weight: 600;
+  }
+
+  .retry-btn {
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    font-size: 0.75rem;
+    border-radius: 10px;
+  }
+
+  .retry-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.health-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.health-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.last-checked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.checked-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--muted);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.health-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.health-meta {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 450px) {
+  /* Simplified for consolidated media query above */
+}
+
+.uptime-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.uptime-label {
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+}
+
+.uptime-value {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Retry Button */
+.retry-btn {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.retry-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.retry-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.retry-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: transparent;
+}
+
+.retry-btn svg {
+  transition: transform 0.5s ease;
+}
+
+.retry-btn:hover:not(:disabled) svg {
+  transform: rotate(180deg);
+}
+
+.cooldown-timer {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  display: none;
+}
+
+.retry-btn:disabled .cooldown-timer {
+  display: inline;
+}
+
+.retry-btn:disabled .retry-text {
+  display: none;
+}
+
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.health-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 28px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.health-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.health-card:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.03),
+      transparent);
+  transform: skewX(-20deg);
+  animation: shimmer 6s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  20% {
+    left: 200%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+.led-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.card-status-dot::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.15;
+  filter: blur(2px);
+}
+
+.status-checking {
+  background: var(--warning);
+  color: var(--warning);
+  box-shadow: 0 0 10px var(--warning);
+  animation: pulse-led 1.5s infinite ease-in-out;
+}
+
+.status-online {
+  background: var(--success);
+  color: var(--success);
+  box-shadow: 0 0 12px var(--success), 0 0 20px rgba(26, 155, 108, 0.3);
+}
+
+.status-offline {
+  background: var(--error);
+  color: var(--error);
+  box-shadow: 0 0 12px var(--error), 0 0 20px rgba(201, 64, 64, 0.3);
+}
+
+@keyframes pulse-led {
+  0% {
+    opacity: 0.5;
+    filter: blur(0px);
+  }
+
+  50% {
+    opacity: 1;
+    filter: blur(1px);
+  }
+
+  100% {
+    opacity: 0.5;
+    filter: blur(0px);
+  }
+}
+
+.card-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.card-value {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.card-value.online {
+  color: var(--text);
+}
+
+/* Keep text white, let the DOT show status */
+.card-value.offline {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.card-value.checking {
+  color: var(--muted);
+}
+
+.status-checking {
+  background: var(--warning);
+  color: var(--warning);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.status-online {
+  background: var(--success);
+  color: var(--success);
+  box-shadow: 0 0 15px rgba(26, 155, 108, 0.4);
+}
+
+.status-offline {
+  background: var(--error);
+  color: var(--error);
+  box-shadow: 0 0 15px rgba(201, 64, 64, 0.4);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.card-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.card-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.card-value.online {
+  color: var(--success);
+}
+
+.card-value.offline {
+  color: var(--error);
+}
+
+.card-value.checking {
+  color: var(--warning);
 }
 
 html {

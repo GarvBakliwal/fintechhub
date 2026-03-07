@@ -5,11 +5,13 @@ import routes from './routes/index'
 import cors from 'cors'
 import helmet from 'helmet';
 import path from 'path';
+import healthRoutes from "./routes/healthRoutes";
+
 dotenv.config();
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000', `${process.env.SITE_URL}`,`${process.env.SITE_URL}:3000`,'https://fintechhub.site','http://fintechhub.site'],
+    origin: ['http://localhost:3000', `${process.env.SITE_URL}`, `${process.env.SITE_URL}:3000`, 'https://fintechhub.site', 'http://fintechhub.site'],
     credentials: true
 }));
 
@@ -20,15 +22,18 @@ app.use(
         contentSecurityPolicy: false,
     })
 );
-app.use(express.static(path.join(__dirname, "public")));
+
+app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use(express.json());
 
 app.use('/api', helmet());
 app.use('/api', routes);
 
-app.get('/docs', (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "public"));
+app.get('/health', healthRoutes);
+
+app.get('/', (req: Request, res: Response) => {
+    res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
 connectDB();
 app.listen(process.env.PORT, () => {
