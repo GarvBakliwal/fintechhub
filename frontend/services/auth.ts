@@ -7,5 +7,7 @@ export const signUpUser = async (data: any) => {
 
 export const loginUser = async (data: any) => {
     const response = await API.post('/login', data);
+    console.log("LOGIN RESPONSE:", response.data);
+    console.log("Browser cookies:", document.cookie);
     return response.data;
 }

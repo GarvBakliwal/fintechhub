@@ -5,10 +5,10 @@ import { generateToken } from "../lib/jwt";
 
 const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? ("none" as const) : ("lax" as const),
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    secure: true,
+    sameSite: "none" as const,
     path: "/",
+    maxAge: 24 * 60 * 60 * 1000
 };
 
 export const signUp = async (req: Request, res: Response) => {
@@ -54,7 +54,15 @@ export async function login(req: Request, res: Response) {
             throw new Error("Password does not Match!");
         }
         const token = generateToken(`${isExistingUser._id}`);
+        console.log("===== LOGIN DEBUG =====");
+        console.log("NODE_ENV:", process.env.NODE_ENV);
+        console.log("JWT_SECRET exists:", !!process.env.JWT_SECRET);
+        console.log("Generated Token:", token);
+        console.log("Token parts:", token.split(".").length);
+
         res.cookie("token", token, cookieOptions);
+        console.log("Setting cookie with options:", cookieOptions);
+        console.log("=======================");
 
         res.status(200).json({
             message: "Login Successful",
@@ -75,8 +83,8 @@ export async function login(req: Request, res: Response) {
 export const logoutUser = (req: Request, res: Response) => {
     res.clearCookie("token", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         path: "/"
     });
 
