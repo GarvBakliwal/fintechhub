@@ -3,14 +3,15 @@ import React from 'react';
 import { useGlobalStore } from '@/store/globalStore';
 import { FooterProps } from '@/types';
 import Logout from './ui/logout';
+import { logoutUser } from '@/services/auth';
 
 const Footer = ({ type = 'desktop' }: Omit<FooterProps, 'user'>) => {
   const router = useRouter();
   const user = useGlobalStore((state) => state.user);
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     useGlobalStore.getState().logout?.();
-    localStorage.removeItem('token');
+    await logoutUser();
     router.push('/sign-in');
   };
 
@@ -31,7 +32,7 @@ const Footer = ({ type = 'desktop' }: Omit<FooterProps, 'user'>) => {
         </p>
       </div>
 
-      <Logout/>
+      <Logout />
 
     </footer>
   );
