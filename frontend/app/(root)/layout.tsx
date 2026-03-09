@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex h-screen w-full font-inter overflow-x-hidden">
+    <main className="flex w-full font-inter">
       {/* Desktop Sidebar */}
       <Sidebar />
 
@@ -23,12 +23,12 @@ export default function RootLayout({
             </span>
           </div>
 
-          <Logout/>
-          
+          <Logout />
+
         </header>
 
         {/* Page Content */}
-        <section className="flex-1 overflow-y-auto pb-[140px] md:pb-0">
+        <section className="flex-1 pb-[140px] md:pb-0">
           {children}
         </section>
 

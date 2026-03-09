@@ -11,7 +11,14 @@ import ServerError from '@/components/ui/servererror';
 
 const HomeClient = () => {
     const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
+    const setUser = useGlobalStore((state) => state.setUser);
     const { data, error } = useData();
+
+    useEffect(() => {
+        if (data?.user) {
+            setUser(data.user);
+        }
+    }, [data?.user, setUser]);
 
     useEffect(() => {
         if (data && !useGlobalStore.getState().selectedAccountId) {
