@@ -81,6 +81,95 @@ export const removeSpecialCharacters = (value: string | null | undefined) => {
   return value.replace(/[^\w\s',.-]/gi, ""); // Allow basic punctuation for names/addresses
 };
 
+interface UrlQueryParams {
+  params: string;
+  key: string;
+  value: string;
+}
+
+export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+  const currentUrl = qs.parse(params);
+
+  currentUrl[key] = value;
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
+}
+
+export function getAccountTypeColors(type: AccountTypes) {
+  switch (type) {
+    case "depository":
+      return {
+        bg: "bg-blue-25",
+        lightBg: "bg-blue-100",
+        title: "text-blue-900",
+        subText: "text-blue-700",
+      };
+
+    case "credit":
+      return {
+        bg: "bg-success-25",
+        lightBg: "bg-success-100",
+        title: "text-success-900",
+        subText: "text-success-700",
+      };
+
+    default:
+      return {
+        bg: "bg-green-25",
+        lightBg: "bg-green-100",
+        title: "text-green-900",
+        subText: "text-green-700",
+      };
+  }
+}
+
+export function countTransactionCategories(
+  transactions: Transaction[]
+): CategoryCount[] {
+  const categoryCounts: { [category: string]: number } = {};
+  let totalCount = 0;
+
+  transactions?.forEach((transaction) => {
+    // Use "Uncategorized" if category is missing or empty
+    const category = transaction.category?.trim() || "Uncategorized";
+
+    if (categoryCounts.hasOwnProperty(category)) {
+      categoryCounts[category]++;
+    } else {
+      categoryCounts[category] = 1;
+    }
+    totalCount++;
+  });
+
+  const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map(
+    (category) => ({
+      name: category,
+      count: categoryCounts[category],
+      totalCount,
+    })
+  );
+
+  aggregatedCategories.sort((a, b) => b.count - a.count);
+
+  return aggregatedCategories;
+}
+
+export function extractCustomerIdFromUrl(url: string) {
+  // Split the URL string by '/'
+  const parts = url.split("/");
+
+  // Extract the last part, which represents the customer ID
+  const customerId = parts[parts.length - 1];
+
+  return customerId;
+}
+
 export const getTransactionStatus = (date: Date) => {
   const today = new Date();
   const twoDaysAgo = new Date(today);

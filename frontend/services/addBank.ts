@@ -12,7 +12,6 @@ export const useAddBank = () => {
     async (public_token: string) => {
       await exchangePublicToken({ public_token });
       await refetch();
-      window.location.reload();
     },
     [refetch]
   );

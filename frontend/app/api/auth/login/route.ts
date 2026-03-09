@@ -3,6 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 export async function POST(req: NextRequest) {
+    // Basic CSRF check
+    const origin = req.headers.get("origin");
+    const host = req.headers.get("host");
+    if (origin && !origin.includes(host as string)) {
+        return NextResponse.json({ message: "Forbidden: CSRF check failed" }, { status: 403 });
+    }
+
     try {
         const body = await req.json();
 

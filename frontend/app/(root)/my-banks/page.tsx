@@ -20,7 +20,7 @@ const MyBanks = () => {
 
   useEffect(() => {
     if (data && !useGlobalStore.getState().selectedAccountId) {
-      const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
+      const firstAccountId = data.accounts?.[0]?._id || data.accounts?.[0]?.accountId || '';
       setSelectedAccountId(firstAccountId);
     }
   }, [data, setSelectedAccountId]);

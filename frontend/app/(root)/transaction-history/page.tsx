@@ -27,9 +27,8 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (data && !selectedAccountId) {
       const firstAccountId =
-        data.accounts?.[0]?.id ||
-        data.accounts?.[0]?.accountId ||
         data.accounts?.[0]?._id ||
+        data.accounts?.[0]?.accountId ||
         "";
 
       setSelectedAccountId(firstAccountId);
