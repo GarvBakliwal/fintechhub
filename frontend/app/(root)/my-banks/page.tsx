@@ -1,48 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import BankCard from "@/components/BankCard";
 import HeaderBox from "@/components/HeaderBox";
 import { Spinner } from "@/components/ui/loadingspinner";
-import { getData } from "@/services/data";
 import { useGlobalStore } from "@/store/globalStore";
 import { useAddBank } from "@/services/addBank";
 import ServerError from "@/components/ui/servererror";
+import { useData } from "@/hooks/useData";
 
 const MyBanks = () => {
-  const accounts = useGlobalStore((state) => state.accounts);
-  const setAccounts = useGlobalStore((state) => state.setAccounts);
+  const { data, isLoading, error: queryError } = useData();
+  const accounts = (data?.accounts || []);
   const user = useGlobalStore((state) => state.user);
-  const setUser = useGlobalStore((state) => state.setUser);
   const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(accounts.length === 0);
 
-  const { handleAddBank, plaidLoading } = useAddBank(); // ✅ use hook
+  const { handleAddBank, plaidLoading } = useAddBank();
 
   useEffect(() => {
-    if (accounts.length > 0) {
-      setLoading(false);
-      return;
+    if (data && !useGlobalStore.getState().selectedAccountId) {
+      const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
+      setSelectedAccountId(firstAccountId);
     }
-    const fetchAccounts = async () => {
-      try {
-        const data = await getData();
-        setAccounts(data.accounts || []);
-        setUser(data.user);
-        const firstAccountId = data.accounts?.[0]?.id || data.accounts?.[0]?.accountId || '';
-        setSelectedAccountId(firstAccountId);
-      } catch {
-        setError("Failed to load accounts.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAccounts();
-  }, []);
+  }, [data, setSelectedAccountId]);
 
-  if (loading)
+  if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen w-full bg-white">
         <Spinner size="large" show className="text-blue-600">
@@ -50,16 +33,15 @@ const MyBanks = () => {
         </Spinner>
       </div>
     );
-  if (error)
-  return (
-    <ServerError
-      title="Banks not loading"
-      message="Unable to fetch your bank accounts right now."
-    />
-  );
+  if (queryError)
+    return (
+      <ServerError
+        title="Banks not loading"
+        message="Unable to fetch your bank accounts right now."
+      />
+    );
 
   return (
-
     <section className="my-banks">
       <div className="flex items-center justify-between">
         <HeaderBox
@@ -86,7 +68,7 @@ const MyBanks = () => {
 
       {/* Bank Cards */}
       <div className="flex flex-wrap gap-6 mt-6">
-        {accounts.map((acc) => (
+        {accounts.map((acc: any) => (
           <BankCard
             key={acc._id}
             account={acc}

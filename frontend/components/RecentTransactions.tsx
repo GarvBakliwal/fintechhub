@@ -1,35 +1,32 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useData } from "@/hooks/useData";
 import { useGlobalStore } from "@/store/globalStore";
 import { Account } from "@/types/index";
 import Link from "next/link";
 import TransactionsTable from "./TransactionsTable";
 
 const RecentTransactions = () => {
-  const accounts = useGlobalStore((state) => state.accounts) as Account[];
+  const { data } = useData();
+  const accounts = (data?.accounts || []) as Account[];
+
+  const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
   const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
 
-  // Use global selectedAccountId as the source of truth
-  const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
-  const [activeTab, setActiveTab] = useState(selectedAccountId || accounts[0]?.accountId || accounts[0]?._id || "");
-
-  // When activeTab changes, update the global store
-  useEffect(() => {
-    setSelectedAccountId(activeTab);
-  }, [activeTab, setSelectedAccountId]);
+  const activeTab = selectedAccountId || accounts[0]?.accountId || accounts[0]?._id || "";
 
   const selectedAccount = accounts.find(
     (acc) => acc.accountId === activeTab || acc._id === activeTab
   );
-  const allTransactions = useGlobalStore((state) => state.transactions);
+
+  const allTransactions = data?.transactions || [];
   const transactions = allTransactions
     .filter(
-      (txn) =>
+      (txn: any) =>
         txn.accountId === selectedAccount?.accountId ||
         txn.accountId === selectedAccount?._id
     )
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // latest first
+    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()) // latest first
     .slice(0, 10);
   if (!transactions.length) {
     return (
@@ -60,7 +57,7 @@ const RecentTransactions = () => {
               ? "border-blue-600 text-blue-600"
               : "border-transparent text-gray-500 hover:text-blue-600"
               }`}
-            onClick={() => setActiveTab(account.accountId || account._id)}
+            onClick={() => setSelectedAccountId(account.accountId || account._id)}
           >
             {account.name || account.official_name}
           </button>

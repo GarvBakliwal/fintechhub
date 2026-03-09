@@ -1,46 +1,31 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import HeaderBox from '@/components/HeaderBox';
 import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
-import { getData } from '@/services/data';
+import { useData } from '@/hooks/useData';
 import { useGlobalStore } from '@/store/globalStore';
 import { Spinner } from '@/components/ui/loadingspinner'; // adjust the path if needed
 import ServerError from '@/components/ui/servererror';
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
-  const router = useRouter();
+
+  const { data, isLoading, error } = useData();
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getData();
-      useGlobalStore.getState().setAllData(data);
-
+    if (data) {
       const firstAccountId =
         data.accounts?.[0]?.id ||
         data.accounts?.[0]?.accountId ||
         "";
-
       setSelectedAccountId(firstAccountId);
-    } catch {
-      setError("Failed to load data.");
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [data, setSelectedAccountId]);
 
-  fetchData();
-}, [setSelectedAccountId]);
-
-
-  if (loading)
+  if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen w-full bg-white">
         <Spinner size="large" show className="text-blue-600">

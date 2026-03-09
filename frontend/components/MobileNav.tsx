@@ -12,16 +12,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useGlobalStore } from '@/store/globalStore';
+import { logoutUser } from '@/services/auth';
 
 const MobileNav = () => {
   const pathname = usePathname();
   const router = useRouter();
   const user = useGlobalStore((state) => state.user);
-  const logout = useGlobalStore((state) => state.logout);
 
-  const handleLogOut = () => {
-    logout?.();
-    localStorage.removeItem('token');
+  const handleLogOut = async () => {
+    await logoutUser();
     router.push('/sign-in');
   };
 

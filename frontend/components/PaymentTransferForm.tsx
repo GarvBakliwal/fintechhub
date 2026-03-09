@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import  {BankDropdown}  from "../components/BankDropdown";
+import { BankDropdown } from "../components/BankDropdown";
 import { Button } from "./ui/button";
 import {
   Form,
@@ -20,7 +20,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { useGlobalStore } from "@/store/globalStore";
+import { useData } from "@/hooks/useData";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -31,7 +31,8 @@ const formSchema = z.object({
 });
 
 const PaymentTransferForm = () => {
-  const accounts = useGlobalStore((state) => state.accounts);
+  const { data } = useData();
+  const accounts = (data?.accounts || []);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,7 +52,7 @@ const PaymentTransferForm = () => {
 
     try {
       console.log(data);
-      
+
       // Simulate transfer logic
       // ...
 

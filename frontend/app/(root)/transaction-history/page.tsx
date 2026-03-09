@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import HeaderBox from '@/components/HeaderBox';
 import { Pagination } from '@/components/Pagination';
 import TransactionsTable from '@/components/TransactionsTable';
@@ -8,61 +8,33 @@ import { formatAmount } from '@/lib/utils';
 import { BankDropdown } from "@/components/BankDropdown";
 import { useGlobalStore } from '@/store/globalStore';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { getData } from '@/services/data';
 import { Spinner } from '@/components/ui/loadingspinner';
 import ServerError from '@/components/ui/servererror';
+import { useData } from '@/hooks/useData';
 
 const ROWS_PER_PAGE = 10;
 
 const TransactionHistory = () => {
-  const accounts = useGlobalStore((state) => state.accounts);
-  const setAccounts = useGlobalStore((state) => state.setAccounts);
-  let transactions = useGlobalStore((state) => state.transactions);
-  const setTransactions = useGlobalStore((state) => state.setTransactions);
+  const { data, isLoading, error } = useData();
+  const accounts = data?.accounts || [];
+  const transactions = data?.transactions || [];
   const user = useGlobalStore((state) => state.user);
-  const setUser = useGlobalStore((state) => state.setUser);
   const setSelectedAccountId = useGlobalStore((state) => state.setSelectedAccountId);
   const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [loading, setLoading] = useState(
-    !accounts.length || !transactions.length || !user
-  );
-  const [error, setError] = useState('');
-
-  const [hasFetched, setHasFetched] = useState(false);
-
   useEffect(() => {
-    if (hasFetched) return;
+    if (data && !selectedAccountId) {
+      const firstAccountId =
+        data.accounts?.[0]?.id ||
+        data.accounts?.[0]?.accountId ||
+        data.accounts?.[0]?._id ||
+        "";
 
-    const fetchAll = async () => {
-      try {
-        setLoading(true);
-
-        const data = await getData();
-
-        setUser(data.user);
-        setAccounts(data.accounts || []);
-        setTransactions(data.transactions || []);
-
-        const firstAccountId =
-          data.accounts?.[0]?.id ||
-          data.accounts?.[0]?.accountId ||
-          data.accounts?.[0]?._id ||
-          "";
-
-        setSelectedAccountId(firstAccountId);
-      } catch (err) {
-        setError("Failed to load data.");
-      } finally {
-        setLoading(false);
-        setHasFetched(true);
-      }
-    };
-
-    fetchAll();
-  }, [hasFetched, setUser, setAccounts, setTransactions, setSelectedAccountId]);
+      setSelectedAccountId(firstAccountId);
+    }
+  }, [data, selectedAccountId, setSelectedAccountId]);
 
   const page = Number(searchParams.get('page')) || 1;
 
@@ -76,10 +48,10 @@ const TransactionHistory = () => {
 
   const selectedAccount =
     accounts.find(
-      (acc) => acc.accountId === selectedAccountId || acc._id === selectedAccountId
+      (acc: any) => acc.accountId === selectedAccountId || acc._id === selectedAccountId
     ) || accounts[0];
 
-  if (loading)
+  if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen w-full bg-white">
         <Spinner size="large" show className="text-blue-600">
@@ -96,9 +68,9 @@ const TransactionHistory = () => {
     );
 
   const accountTransactions = transactions.filter(
-    (txn) =>
-      txn.accountId === selectedAccount.accountId ||
-      txn.accountId === selectedAccount._id
+    (txn: any) =>
+      txn.accountId === selectedAccount?.accountId ||
+      txn.accountId === selectedAccount?._id
   );
 
   const totalPages = Math.ceil(accountTransactions.length / ROWS_PER_PAGE);

@@ -1,10 +1,11 @@
-import { useGlobalStore } from "@/store/globalStore";
+import { useData } from "@/hooks/useData";
 import AnimatedCounter from './AnimatedCounter';
 import DoughnutChart from './DoughnutChart';
 import { Account } from "@/types";
 
 const TotalBalanceBox = () => {
-  const accounts = useGlobalStore((state) => state.accounts);
+  const { data } = useData();
+  const accounts = (data?.accounts || []) as Account[];
   const totalBanks = accounts.length;
   const totalCurrentBalance = accounts.reduce(
     (sum: number, acc: Account) => sum + Number(acc.current_balance),

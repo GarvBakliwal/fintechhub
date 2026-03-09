@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import React, { useState, useCallback, useEffect } from "react";
 import BankCard from "./BankCard";
@@ -7,22 +9,22 @@ import { useGlobalStore } from "@/store/globalStore";
 import { Account, CategoryCount } from "@/types/index";
 import { usePlaidLink } from 'react-plaid-link';
 import { createLinkToken, exchangePublicToken } from "@/services/plaid";
-import { getData } from "@/services/data";
 import { Spinner } from "@/components/ui/loadingspinner";
+import { useData } from "@/hooks/useData";
 
 const RightSidebar = () => {
+  const { data, refetch } = useData();
   const user = useGlobalStore((state) => state.user);
-  const accounts = useGlobalStore((state) => state.accounts);
-  const setAccounts = useGlobalStore((state) => state.setAccounts);
+  const accounts = (data?.accounts || []) as Account[];
   const selectedAccountId = useGlobalStore((state) => state.selectedAccountId);
 
   const selectedAccount = accounts.find(
     (acc: Account) => acc._id === selectedAccountId || acc.accountId === selectedAccountId
   );
   const banks = accounts.slice(0, 2);
-  const allTransactions = useGlobalStore((state) => state.transactions);
+  const allTransactions = (data?.transactions || []);
   const transactions = allTransactions.filter(
-    (txn) => txn.accountId === selectedAccount?.accountId || txn.accountId === selectedAccount?._id
+    (txn: any) => txn.accountId === selectedAccount?.accountId || txn.accountId === selectedAccount?._id
   );
   const categories: CategoryCount[] = countTransactionCategories(transactions);
 
@@ -32,15 +34,10 @@ const RightSidebar = () => {
   const onSuccess = useCallback(
     async (public_token: string) => {
       await exchangePublicToken({ public_token });
-      try {
-        const data = await getData();
-        setAccounts(data.accounts || []);
-      } catch (err) {
-        console.error(err);
-      }
+      await refetch();
       window.location.reload();
     },
-    [setAccounts]
+    [refetch]
   );
 
   const { open, ready } = usePlaidLink({

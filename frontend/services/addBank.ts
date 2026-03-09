@@ -1,28 +1,26 @@
 import { useState, useCallback, useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";
 import { createLinkToken, exchangePublicToken } from "@/services/plaid";
-import { getData } from "@/services/data";
-import { useGlobalStore } from "@/store/globalStore";
+import { useData } from "@/hooks/useData";
 
 export const useAddBank = () => {
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [plaidLoading, setPlaidLoading] = useState(false);
-  const setAccounts = useGlobalStore((state) => state.setAccounts);
+  const { refetch } = useData();
 
   const onSuccess = useCallback(
     async (public_token: string) => {
       await exchangePublicToken({ public_token });
-      const data = await getData();
-      setAccounts(data.accounts || []);
+      await refetch();
       window.location.reload();
     },
-    [setAccounts]
+    [refetch]
   );
 
   const { open, ready } = usePlaidLink({
     token: linkToken || '',
     onSuccess,
-    onExit: (err) => {
+    onExit: (err: any) => {
       if (err) console.warn("[PLAID] Link exited with error:", err);
     },
   });
