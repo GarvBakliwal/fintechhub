@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import path from 'path';
 import healthRoutes from "./routes/healthRoutes";
 import cookieParser from "cookie-parser";
+import logger from './lib/logger';
+import morganMiddleware from './middlewares/loggerMiddleware';
 
 dotenv.config();
 
@@ -28,6 +30,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(morganMiddleware);
 app.use('/api', helmet());
 app.use('/api', routes);
 
@@ -38,5 +41,5 @@ app.get('/', (req: Request, res: Response) => {
 });
 connectDB();
 app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+    logger.info(`Server is running on port ${process.env.PORT}`);
 });

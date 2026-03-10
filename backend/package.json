@@ -25,6 +25,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.2",
     "@types/mongoose": "^5.11.96",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^22.15.21",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
@@ -35,6 +36,9 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
-    "plaid": "^35.0.0"
+    "morgan": "^1.10.1",
+    "plaid": "^35.0.0",
+    "winston": "^3.19.0",
+    "winston-mongodb": "^7.0.1"
   }
 }
